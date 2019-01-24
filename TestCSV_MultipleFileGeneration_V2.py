@@ -53,7 +53,7 @@ while x < 256:
 ## Look to create 20 CSV files, with preamble.
 y = 0
 while y < 20:
-    Name = str("ConfigTestNumbers") + str(y) + str(".csv")
+    Name = str("nTx_seq_") + str(y) + str(".csv")
     ## csvPreamble_Serial = str(BinaryRange[y])
     with open(Name, 'w') as csvFile:
         writer = csv.writer(csvFile)
