@@ -7,6 +7,7 @@ Created on Wed Jan 23 08:42:00 2019
 import csv
 
 """
+Reference on how CSV reads data
 csvData = [[1], [22], [21], [24]]
 
 Opening preamble:
@@ -15,6 +16,7 @@ Opening preamble:
 00100000
 """
 
+"""
 ## Binary Range Generator, for the third line of the preamble.
 
 FileRange = list(range(0,20))
@@ -23,6 +25,8 @@ for x in FileRange:
     Number_Binary = "{0:b}".format(FileRange[x])
     BinaryRange.append(Number_Binary)
     
+"""
+
 ## Kludge
 
 serial_numbers =  [[["00100000"]],[["00100001"]],[["00100010"]],[["00100011"]],
@@ -42,7 +46,7 @@ Data_Line_1 = ["01010101"]
 
 ## CSV Closer
 
-csvCloser = [["01010101"]] 
+csvCloser = [["00000000"],["01010101"]] 
 
 ## Loop to create csvData list.
 x = 0
