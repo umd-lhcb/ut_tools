@@ -55,9 +55,8 @@ while x < 256:
     x = x + 1
 
 ## Look to create 20 CSV files, with preamble.
-y = 0
-while y < 20:
-    Name = str("nTx_seq_") + str(y) + str(".csv")
+for y in range(0, 20):
+    Name = 'nTx_seq_' + str(y) + '.csv'
     ## csvPreamble_Serial = str(BinaryRange[y])
     with open(Name, 'w') as csvFile:
         writer = csv.writer(csvFile)
