@@ -65,8 +65,6 @@ for y in range(0, 20):
         writer.writerows(csvData)
         writer.writerows(csvCloser)
         csvFile.close()
-    y = y + 1
-
 """
 while x < 255:
     my_randoms = random.sample(range(100), 8)
