@@ -74,8 +74,8 @@ for y in range(0, 20):
         writer = csv.writer(csvFile)
         writer.writerows(csvPreamble)
         writer.writerows(serial_numbers[y])
-        for y in count:
-            writer.writerow([x[y]])
+        for z in count:
+            writer.writerow([x[z]])
         writer.writerows(csvCloser)
         csvFile.close()
 """
