@@ -1,31 +1,10 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
 """
 Created on Wed Jan 23 08:42:00 2019
 
 @author: raymo
 """
 import csv
-
-"""
-Reference on how CSV reads data
-csvData = [[1], [22], [21], [24]]
-
-Opening preamble:
-260
-10101010
-00100000
-"""
-
-"""
-## Binary Range Generator, for the third line of the preamble.
-
-FileRange = list(range(0,20))
-BinaryRange = []
-for x in FileRange:
-    Number_Binary = "{0:b}".format(FileRange[x])
-    BinaryRange.append(Number_Binary)
-    
-"""
 
 ## Kludge
 
@@ -78,7 +57,26 @@ for y in range(0, 20):
             writer.writerow([x[z]])
         writer.writerows(csvCloser)
         csvFile.close()
+
 """
+Reference on how CSV reads data
+csvData = [[1], [22], [21], [24]]
+
+Opening preamble:
+260
+10101010
+00100000
+
+
+## Binary Range Generator, for the third line of the preamble.
+
+FileRange = list(range(0,20))
+BinaryRange = []
+for x in FileRange:
+    Number_Binary = "{0:b}".format(FileRange[x])
+    BinaryRange.append(Number_Binary)
+    
+
 while x < 255:
     my_randoms = random.sample(range(100), 8)
     csvData.append(my_randoms)
