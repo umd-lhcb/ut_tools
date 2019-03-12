@@ -35,7 +35,8 @@ def ConvertBits(hexlist, datatype):  # general conversion method
             
     elif datatype == "bin": 
         for num in hexlist:
-            outputlist.append(bin(int(num, 16))[2:])  # remove "0b" with [2:]
+            outputlist.append(bin(int(num, 16))[2:].zfill(8))
+                # remove "0b" with [2:], add leading 0's
     
     else:
         print("Invalid datatype: expected 'int' or 'bin'")
@@ -49,16 +50,20 @@ def PrintLines(memlist):  # debug method, spits out entire raw list
         print(line)
 
 def main(filepath, x, y):  # standard procedure, run through every method 
-    print("\n\nProcessing",filepath,"\n\n")
+    print("\n\nProcessing",filepath)
     data = GetData(filepath)
-    bitlist = ExtractBits(6, 7, data)
+    bitlist = ExtractBits(x, y, data)
     uniques = IdentifyBits(bitlist)
+    print("\nArray Size",len(uniques),"\n\n")
     print(uniques,"\n")
     print(ConvertBits(uniques, "bin"),"\n")
     print(ConvertBits(uniques, "int"),"\n")
     
-#main("mem_mon_table-const.txt", 6, 7)  # bits are on indices 6 and 7
-main("mem_mon_table-cyclic.txt", 6, 7)  # bits are on indices 6 and 7
+    
+main("mem_mon_table-const.txt", 7, 8)  # bits are on indices 6 and 7
+#main("mem_mon_table-cyclic.txt", 7, 8)  # bits are on indices 6 and 7
 
 ####### METHODS TO ADD #######
 ### identify "legal" permutations
+### count number of times each hex num is found, store as tuple (num, # hits)
+ 
