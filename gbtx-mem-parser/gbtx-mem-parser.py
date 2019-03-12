@@ -48,7 +48,7 @@ def PrintLines(memlist):  # debug method, spits out entire raw list
     for line in memlist:
         print(line)
 
-def main(filepath, x, y):
+def main(filepath, x, y):  # standard procedure, run through every method 
     print("\n\nProcessing",filepath,"\n\n")
     data = GetData(filepath)
     bitlist = ExtractBits(6, 7, data)
