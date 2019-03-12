@@ -26,17 +26,20 @@ def IdentifyBits(bitlist):  # identify unique bits
             
     return uniques
 
-def ConvertBits(hexlist, string):  # general conversion method
+def ConvertBits(hexlist, datatype):  # general conversion method
     outputlist = []
     
-    if string == "int":
+    if datatype == "int":
         for num in hexlist:
             outputlist.append(int(num, 16))
             
-    if string == "bin": 
+    elif datatype == "bin": 
         for num in hexlist:
             outputlist.append(bin(int(num, 16))[2:])  # remove "0b" with [2:]
-            
+    
+    else:
+        print("Invalid datatype: expected 'int' or 'bin'")
+        
     return outputlist
 
 ##########Debug Methods##############
@@ -46,13 +49,16 @@ def PrintLines(memlist):  # debug method, spits out entire raw list
         print(line)
 
 def main(filepath, x, y):
+    print("\n\nProcessing",filepath,"\n\n")
     data = GetData(filepath)
     bitlist = ExtractBits(6, 7, data)
     uniques = IdentifyBits(bitlist)
-    print(uniques)
-    print(ConvertBits(uniques, "bin"))
+    print(uniques,"\n")
+    print(ConvertBits(uniques, "bin"),"\n")
+    print(ConvertBits(uniques, "int"),"\n")
     
-main("mem_mon_table-const.txt", 6, 7)  # bits are on indices 6 and 7
+#main("mem_mon_table-const.txt", 6, 7)  # bits are on indices 6 and 7
+main("mem_mon_table-cyclic.txt", 6, 7)  # bits are on indices 6 and 7
 
 ####### METHODS TO ADD #######
 ### identify "legal" permutations
