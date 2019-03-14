@@ -9,6 +9,7 @@ def GetData(filepath):  # method will parse a given txt file path
          data = file.readlines()  # place each line into a list named 'data'
     return data
     
+
 def ExtractBits(x, y, memlist):  # returns the xth and yth digits
     bitlist = []
     
@@ -17,54 +18,42 @@ def ExtractBits(x, y, memlist):  # returns the xth and yth digits
         
     return bitlist
 
-def IdentifyBits(bitlist):  # identify unique bits
-    uniques = []
-    
-    for bit in bitlist:
-        if bit not in uniques:  # TODO: count each appearance of unique simult.
-            uniques.append(bit)
-            
-    return uniques
 
-def ConvertBits(hexlist, datatype):  # general conversion method
-    outputlist = []
+#####################################################
+############ Method sent to the Analyzer ############
+#####################################################
+def PrepAnalyzer(filepath):
     
-    if datatype == "int":
-        for num in hexlist:
-            outputlist.append(int(num, 16))
-            
-    elif datatype == "bin": 
-        for num in hexlist:
-            outputlist.append(bin(int(num, 16))[2:].zfill(8))
-                # remove "0b" with [2:], add leading 0's
+    x = 7   # assuming locations do not change, this is where the bits are
+    y = 8   
+    raw_data = GetData(filepath)                  # import data from csv
+    processed_data = ExtractBits(x, y, raw_data)  # take out hexes from csv
     
-    else:
-        print("Invalid datatype: expected 'int' or 'bin'")
-        
-    return outputlist
+    return processed_data
+#####################################################
+#####################################################
+#####################################################
 
-##########Debug Methods##############
+
+#####################################################
+##################  Debug Methods  ##################
+#####################################################
 
 def PrintLines(memlist):  # debug method, spits out entire raw list
     for line in memlist:
         print(line)
 
-def main(filepath, x, y):  # standard procedure, run through every method 
-    print("\n\nProcessing",filepath)
+
+def maindebug(filepath, x, y):  # standard procedure, run through every method 
+    print("\n\nProcessing",filepath,"\n\n")
     data = GetData(filepath)                # import data from csv
     bitlist = ExtractBits(x, y, data)       # take out hexadecimal bits from csv
-    uniques = IdentifyBits(bitlist)         # from bitlist, grab 1 of every bit
-    print("\nArray Size",len(uniques),"\n\n")
-    print(uniques,"\n")
-    print(ConvertBits(uniques, "bin"),"\n") # conversion
-    print(ConvertBits(uniques, "int"),"\n")
+    print(bitlist)
+    print("\n")
+
+#maindebug("mem_mon_table-const.txt", 7, 8)  # bits are on indices 6 and 7
+#maindebug("mem_mon_table-cyclic.txt", 7, 8)  # bits are on indices 6 and 7
 
 
-main("mem_mon_table-const.txt", 7, 8)  # bits are on indices 6 and 7
-#main("mem_mon_table-cyclic.txt", 7, 8)  # bits are on indices 6 and 7
+# raw txt file
 
-
-####### METHODS TO ADD #######
-### identify "legal" permutations
-### count number of times each hex num is found, store as tuple (num, # hits)
- 
