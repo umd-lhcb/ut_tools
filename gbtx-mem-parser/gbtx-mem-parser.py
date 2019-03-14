@@ -51,17 +51,18 @@ def PrintLines(memlist):  # debug method, spits out entire raw list
 
 def main(filepath, x, y):  # standard procedure, run through every method 
     print("\n\nProcessing",filepath)
-    data = GetData(filepath)
-    bitlist = ExtractBits(x, y, data)
-    uniques = IdentifyBits(bitlist)
+    data = GetData(filepath)                # import data from csv
+    bitlist = ExtractBits(x, y, data)       # take out hexadecimal bits from csv
+    uniques = IdentifyBits(bitlist)         # from bitlist, grab 1 of every bit
     print("\nArray Size",len(uniques),"\n\n")
     print(uniques,"\n")
-    print(ConvertBits(uniques, "bin"),"\n")
+    print(ConvertBits(uniques, "bin"),"\n") # conversion
     print(ConvertBits(uniques, "int"),"\n")
-    
-    
+
+
 main("mem_mon_table-const.txt", 7, 8)  # bits are on indices 6 and 7
 #main("mem_mon_table-cyclic.txt", 7, 8)  # bits are on indices 6 and 7
+
 
 ####### METHODS TO ADD #######
 ### identify "legal" permutations
