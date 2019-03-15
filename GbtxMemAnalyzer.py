@@ -13,7 +13,7 @@ from CsvGen import fixed_patten, cyclic_pattern
 # Generate reference results #
 ##############################
 
-def ref_fixed_pattern(mode, length):
+def ref_fixed_pattern(mode, length, egroups):
     '''Generate a reference fixed pattern.
 
     Parameters:
@@ -21,30 +21,34 @@ def ref_fixed_pattern(mode, length):
             egroup.
         length (list): A list of integers defining the total length of the
             returned list for each egroup.
+        egroups (list): A list of str defining the egroup names.
+
+    Note that len(mode) = len(length) = len(egroups).
 
     Returns:
         ref_data (list): A list of dictionary. Each dictionary has the following
             form:
-                {'egroup0': <2-byte int data>,
-                 'egroup1': <2-byte int data>,
-                 'egroup2': <2-byte int data>,
-                 'egroup3': <2-byte int data>,
-                 'egroup4': <2-byte int data>,
-                 'egroup5': <2-byte int data>,
-                 'egroup6': <2-byte int data>}
+                {'egroupA': <2-byte int data>,
+                 'egroupB': <2-byte int data>,
+                 'egroupC': <2-byte int data>, ...}
     '''
     pass
     # Need to use imported fixed_patten to implement this.
     return ref_data
 
 
-def ref_cyclic_pattern(head, length, offset):
+def ref_cyclic_pattern(head, period, egroups, offset):
     '''Generate a reference cyclic pattern.
 
     Parameters:
         head (list): A list of integers defining the initial pattern for each
             egroup.
-        length (list): A list of integers indicating the cycle for each egroup.
+        period (list): A list of integers indicating the period for each egroup.
+        egroups (list): A list of str defining the egroup names.
+        offset (list): A list of int defining the index of the starting element
+            in the cyclic group.
+
+    Note that len(head) = len(period) = len(egroups) = len(offset).
 
     Returns:
         ref_data (list): Same form as defined in 'ref_fixed_pattern'.
@@ -73,7 +77,11 @@ def check_match(ref_data, parsed_data):
                              'percent_match': float, 'percent_mismatch': float}
                  'egroup1': ...
                 }
+
+            Note that only the egroups present in 'ref_data' will be compared.
     '''
+    pass
+    return stats
 
 
 ########################################
@@ -96,6 +104,8 @@ def check_shift(ref_data, parsed_data):
 
             If it is not a shift, rather a mismatch, the int should be set to an
             integer that is >= 8.
+
+            Note that only the egroups present in 'ref_data' will be compared.
     '''
     pass
     return shifts
