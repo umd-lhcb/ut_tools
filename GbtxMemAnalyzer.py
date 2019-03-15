@@ -2,7 +2,7 @@
 '''
 Created on Thu Mar 14 16:16:49 2019
 
-@author: Nitzan Hirshberg, Raymond Su, Ben Flaggs
+@author: Jorge Ramirez, Nitzan Hirshberg, Raymond Su, Ben Flaggs, Yipeng Sun
 @license: BSD 2-clause
 '''
 
