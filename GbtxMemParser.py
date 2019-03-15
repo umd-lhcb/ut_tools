@@ -19,14 +19,14 @@ class GbtxMemParser(object):
         Returns:
             parsed_data (list): A list of dictionary. Each dictionary has the
                 following form:
-                    {'header':  <2-byte int data>,
-                     'egroup0': <2-byte int data>,
+                    {'egroup0': <2-byte int data>,
                      'egroup1': <2-byte int data>,
                      'egroup2': <2-byte int data>,
                      'egroup3': <2-byte int data>,
                      'egroup4': <2-byte int data>,
                      'egroup5': <2-byte int data>,
                      'egroup6': <2-byte int data>}
+                Note that the header is removed from the final result.
         '''
         with open(self.filename) as f:
             pass
