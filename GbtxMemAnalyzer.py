@@ -13,44 +13,41 @@ from CsvGen import fixed_patten, cyclic_pattern
 # Generate reference patterns #
 ###############################
 
-def ref_fixed_pattern(mode, egroups, length=1000):
+def ref_fixed_pattern(mode, elinks, length=1000):
     '''Generate a reference fixed pattern.
 
     Parameters:
         mode (list): A list of integers defining the fixed pattern for each
             egroup.
-        egroups (list): A list of str defining the egroup names.
+        elinks (list): A list of str defining the elink names.
         length (int): An integers defining the total length of the generated
             list.
 
-    Note that len(mode) = len(egroups).
+    Note that len(mode) = len(elinks).
 
     Returns:
         ref_data (list): A list of dictionary. Each dictionary has the following
             form:
-                {'egroupA': <2-byte int data>,
-                 'egroupB': <2-byte int data>,
-                 'egroupC': <2-byte int data>, ...}
+                {'elinkA-0': <1-byte int>,
+                 'elinkB-1': <1-byte int>,
+                 'elinkC-0': <1-byte int>, ...}
     '''
     # Need to use imported fixed_patten to implement this.
     return ref_data
 
 
-def ref_cyclic_pattern(head, egroups, period,
-                       offset=None, length=1000):
+def ref_cyclic_pattern(head, elinks, period, length=1000):
     '''Generate a reference cyclic pattern.
 
     Parameters:
         head (list): A list of integers defining the initial pattern for each
             egroup.
-        egroups (list): A list of str defining the egroup names.
+        elinks (list): A list of str defining the elink names.
         period (list): A list of integers indicating the period for each egroup.
-        offset (list or None): A list of int defining the index of the starting
-            element in the cyclic group.
         length (int): An integers defining the total length of the generated
             list.
 
-    Note that len(head) = len(period) = len(egroups) = len(offset).
+    Note that len(head) = len(period) = len(elinks).
 
     Returns:
         ref_data (list): Same form as defined in 'ref_fixed_pattern'.
@@ -74,12 +71,12 @@ def check_match(ref_data, parsed_data):
         stats (dict): A dict of dict that summarizes the number of match and
             mismatch, and percentage of match and mismatch for each egroup. The
             return value should have the following form:
-                {'egroup0': {'num_match': int, 'num_of_mismatch': int,
+                {'elinkA-0': {'num_match': int, 'num_of_mismatch': int,
                              'percent_match': float, 'percent_mismatch': float}
-                 'egroup1': ...
+                 'elinkB-1': ...
                 }
 
-            Note that only the egroups present in 'ref_data' will be compared.
+            Note that only the elinks present in 'ref_data' will be compared.
     '''
     return stats
 
@@ -97,21 +94,21 @@ def check_shift(ref_data, parsed_data):
 
     Returns:
         shifts (dict): A dict of list of the following form:
-                {'egroup0': [int, int, int, ...]
-                 'egroup1': ...
+                {'elinkA-0': [int, int, int, ...]
+                 'elinkB-1': ...
                 }
             each int represents number of bits shifted.
 
             If it is not a shift, rather a mismatch, the int should be set to an
             integer that is >= 8.
 
-            Note that only the egroups present in 'ref_data' will be compared.
+            Note that only the elinks present in 'ref_data' will be compared.
     '''
     return shifts
 
 
 def plot_shift(shifts):
-    '''Plot the shift value for all egroups.
+    '''Plot the shift value for all elinks.
 
     Parameters:
         shifts: Same form as defined in 'check_shift'.
