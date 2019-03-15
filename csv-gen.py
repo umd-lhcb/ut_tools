@@ -2,7 +2,7 @@
 #
 # Authors: Ramond Su, Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri Mar 15, 2019 at 01:25 AM -0400
+# Last Change: Fri Mar 15, 2019 at 01:32 AM -0400
 
 from pathlib import Path
 
@@ -40,3 +40,23 @@ def cyclic_pattern(head='00000000', length=256, start_idx=0):
     ref_cyclic_pattern = ['{0:08b}'.format(n)
                           for n in range(int(head, 2), int(head, 2)+length)]
     return ref_cyclic_pattern[start_idx:] + ref_cyclic_pattern[:start_idx]
+
+
+######################
+# Generate csv files #
+######################
+
+for idx in range(0, 20):
+    # Fixed pattern
+    write_to_comet_csv(
+        output_dir / Path('fixed') / Path('nTx_seq_{}.csv'.format(idx)),
+        serial_numbers[idx],
+        fixed_pattern()
+    )
+
+    # Cyclic pattern
+    write_to_comet_csv(
+        output_dir / Path('cyclic') / Path('nTx_seq_{}.csv'.format(idx)),
+        serial_numbers[idx],
+        cyclic_pattern()
+    )
