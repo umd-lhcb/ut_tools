@@ -42,9 +42,9 @@ def ref_cyclic_pattern(head, length):
     return ['{0:08b}'.format(n) for n in range(head, head+length)]
 
 
-def cyclic_pattern(head=0b00000000, length=256, start_idx=0):
+def cyclic_pattern(head=0b00000000, length=256, offset=0):
     ref_pattern = ref_cyclic_pattern(head, length)
-    return ref_pattern[start_idx:] + ref_pattern[:start_idx]
+    return ref_pattern[offset:] + ref_pattern[:offset]
 
 
 ######################
