@@ -7,7 +7,7 @@ sys.path.insert(0, '..')
 
 from GbtxMemAnalyzer import ref_fixed_pattern, ref_cyclic_pattern
 from GbtxMemAnalyzer import check_match
-from GbtxMemAnalyzer import check_shift
+from GbtxMemAnalyzer import check_shift_single_byte, check_shift
 
 
 class GbtxRefPatternTester(unittest.TestCase):
@@ -93,14 +93,20 @@ class GbtxCheckMatchTester(unittest.TestCase):
         self.assertEqual(
             check_match(ref_data, parsed_data),
             {'elink0-0': {'num_match': 3, 'num_of_mismatch': 0,
-                         'percent_match': 1., 'percent_mismatch': 0.},
+                          'percent_match': 1., 'percent_mismatch': 0.},
              'elink4-0': {'num_match': 2, 'num_of_mismatch': 1,
-                         'percent_match': 2/3, 'percent_mismatch': 1/3}}
+                          'percent_match': 2/3, 'percent_mismatch': 1/3}}
         )
 
 
 class GbtxCheckShiftTester(unittest.TestCase):
-    def test_check_match(self):
+    def test_check_shift_single_byte_none(self):
+        self.assertEqual(
+            check_shift_single_byte(0x11, 0x11),
+            0
+        )
+
+    def test_check_shift(self):
         ref_data = ref_cyclic_pattern(
             [0x01, 0x02, 0x04], ['elink0-0', 'elink2-0', 'elink4-0'],
             [2, 3, 7], length=10)

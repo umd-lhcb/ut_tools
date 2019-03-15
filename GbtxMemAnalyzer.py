@@ -1,17 +1,23 @@
 # -*- coding: utf-8 -*-
-"""
+'''
 Created on Thu Mar 14 16:16:49 2019
 
 @author: Nitzan Hirshberg, Raymond Su, Ben Flaggs
 @license: BSD 2-clause
-"""
-
-from CsvGen import fixed_pattern, cyclic_pattern
+'''
 
 
 ###############################
 # Generate reference patterns #
 ###############################
+
+def fixed_pattern(mode=0b01010101, length=256):
+    return ['{0:08b}'.format(mode) for n in range(0, length)]
+
+
+def cyclic_pattern(head=0b00000000, length=256):
+    return ['{0:08b}'.format(n) for n in range(head, head+length)]
+
 
 def ref_fixed_pattern(mode, elinks, length=1000):
     '''Generate a reference fixed pattern.
@@ -32,8 +38,7 @@ def ref_fixed_pattern(mode, elinks, length=1000):
                  'elinkB-1': <1-byte int>,
                  'elinkC-0': <1-byte int>, ...}
     '''
-    # Need to use imported fixed_patten to implement this.
-    return ref_data
+    pass
 
 
 def ref_cyclic_pattern(head, elinks, period, length=1000):
@@ -53,7 +58,7 @@ def ref_cyclic_pattern(head, elinks, period, length=1000):
         ref_data (list): Same form as defined in 'ref_fixed_pattern'.
     '''
     # Need to use imported cyclic_pattern to implement this.
-    return ref_data
+    pass
 
 
 ##############################################
@@ -78,7 +83,7 @@ def check_match(ref_data, parsed_data):
 
             Note that only the elinks present in 'ref_data' will be compared.
     '''
-    return stats
+    pass
 
 
 ########################################
@@ -118,7 +123,7 @@ def check_shift(ref_data, parsed_data):
 
             Note that only the elinks present in 'ref_data' will be compared.
     '''
-    return shifts
+    pass
 
 
 def plot_shift(shifts):

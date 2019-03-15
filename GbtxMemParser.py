@@ -8,7 +8,7 @@ Created on Mon Mar 11 12:41:00 2019
 
 
 class GbtxMemParser(object):
-    def __init__(filename):
+    def __init__(self, filename):
         self.filename = filename
 
     def parse(self):
@@ -38,8 +38,6 @@ class GbtxMemParser(object):
         with open(self.filename) as f:
             pass
 
-        return parsed_data
-
     @staticmethod
     def dissect_str_to_dict(raw_data):
         '''Take a list of string, dissecting them to list of dictionary.
@@ -53,7 +51,7 @@ class GbtxMemParser(object):
                 This is the normal output of the parser.
         '''
         # Egroup ordering: 4-3-2-1-0-6-5 (?)
-        return parsed_data
+        pass
 
     @staticmethod
     def output_to_csv(filename, parsed_data):
