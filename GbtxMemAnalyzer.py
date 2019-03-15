@@ -6,7 +6,7 @@ Created on Thu Mar 14 16:16:49 2019
 @license: BSD 2-clause
 """
 
-from CsvGen import fixed_patten, cyclic_pattern
+from CsvGen import fixed_pattern, cyclic_pattern
 
 
 ###############################
@@ -85,6 +85,20 @@ def check_match(ref_data, parsed_data):
 # Check if the parsed data has shifted #
 ########################################
 
+def check_shift_single_byte(ref_byte, actual_byte):
+    shift = 0
+
+    for i in range(0, 4):
+        if actual_byte << i == ref_byte:
+            shift = i
+            break
+        elif actual_byte >> i == ref_byte:
+            shift = -i
+            break
+
+    return shift
+
+
 def check_shift(ref_data, parsed_data):
     '''Check if parsed data is shifted compared to reference data.
 
@@ -100,7 +114,7 @@ def check_shift(ref_data, parsed_data):
             each int represents number of bits shifted.
 
             If it is not a shift, rather a mismatch, the int should be set to an
-            integer that is >= 8.
+            integer that is >= 4.
 
             Note that only the elinks present in 'ref_data' will be compared.
     '''
