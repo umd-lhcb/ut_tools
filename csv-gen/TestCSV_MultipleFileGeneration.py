@@ -7,7 +7,10 @@ Created on Wed Jan 23 08:42:00 2019
 import csv
 
 """
+<<<<<<< HEAD:TestCSV_Generator/(Old) TestCSV_MultipleFileGeneration_V2.py
 Reference on how CSV reads data
+=======
+>>>>>>> CSV-Generator:csv-gen/TestCSV_MultipleFileGeneration.py
 csvData = [[1], [22], [21], [24]]
 
 Opening preamble:
@@ -16,7 +19,10 @@ Opening preamble:
 00100000
 """
 
+<<<<<<< HEAD:TestCSV_Generator/(Old) TestCSV_MultipleFileGeneration_V2.py
 """
+=======
+>>>>>>> CSV-Generator:csv-gen/TestCSV_MultipleFileGeneration.py
 ## Binary Range Generator, for the third line of the preamble.
 
 FileRange = list(range(0,20))
@@ -25,8 +31,11 @@ for x in FileRange:
     Number_Binary = "{0:b}".format(FileRange[x])
     BinaryRange.append(Number_Binary)
     
+<<<<<<< HEAD:TestCSV_Generator/(Old) TestCSV_MultipleFileGeneration_V2.py
 """
 
+=======
+>>>>>>> CSV-Generator:csv-gen/TestCSV_MultipleFileGeneration.py
 ## Kludge
 
 serial_numbers =  [[["00100000"]],[["00100001"]],[["00100010"]],[["00100011"]],
@@ -46,7 +55,11 @@ Data_Line_1 = ["01010101"]
 
 ## CSV Closer
 
+<<<<<<< HEAD:TestCSV_Generator/(Old) TestCSV_MultipleFileGeneration_V2.py
 csvCloser = [["00000000"],["01010101"]] 
+=======
+csvCloser = ["01010101"] 
+>>>>>>> CSV-Generator:csv-gen/TestCSV_MultipleFileGeneration.py
 
 ## Loop to create csvData list.
 x = 0
@@ -55,8 +68,14 @@ while x < 256:
     x = x + 1
 
 ## Look to create 20 CSV files, with preamble.
+<<<<<<< HEAD:TestCSV_Generator/(Old) TestCSV_MultipleFileGeneration_V2.py
 for y in range(0, 20):
     Name = 'nTx_seq_' + str(y) + '.csv'
+=======
+y = 0
+while y < 20:
+    Name = str("ConfigTestNumbers") + str(y) + str(".csv")
+>>>>>>> CSV-Generator:csv-gen/TestCSV_MultipleFileGeneration.py
     ## csvPreamble_Serial = str(BinaryRange[y])
     with open(Name, 'w') as csvFile:
         writer = csv.writer(csvFile)
@@ -65,6 +84,11 @@ for y in range(0, 20):
         writer.writerows(csvData)
         writer.writerows(csvCloser)
         csvFile.close()
+<<<<<<< HEAD:TestCSV_Generator/(Old) TestCSV_MultipleFileGeneration_V2.py
+=======
+    y = y + 1
+
+>>>>>>> CSV-Generator:csv-gen/TestCSV_MultipleFileGeneration.py
 """
 while x < 255:
     my_randoms = random.sample(range(100), 8)
