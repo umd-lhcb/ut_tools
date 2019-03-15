@@ -12,34 +12,54 @@ class GbtxMemParser(object):
         self.filename = filename
 
     def parse(self):
-        '''Parse the supplied filename and return a list of dictionary.'''
+        '''Parse the supplied filename and return a list of dictionary.
+
+        Parameters: None
+
+        Returns:
+            parsed_data (list): A list of dictionary. Each dictionary has the
+                following form:
+                    {'header':  <2-byte int data>,
+                     'egroup0': <2-byte int data>,
+                     'egroup1': <2-byte int data>,
+                     'egroup2': <2-byte int data>,
+                     'egroup3': <2-byte int data>,
+                     'egroup4': <2-byte int data>,
+                     'egroup5': <2-byte int data>,
+                     'egroup6': <2-byte int data>}
+        '''
         with open(self.filename) as f:
             pass
+
+        return parsed_data
 
     @staticmethod
     def dissect_str_to_dict(raw_data):
         '''Take a list of string, dissecting them to list of dictionary.
 
-        The list of dictionaries should have the following form:
-            [
-                {'header':  <2-byte int data>,
-                 'egroup0': <2-byte int data>,
-                 'egroup1': <2-byte int data>,
-                 'egroup2': <2-byte int data>,
-                 'egroup3': <2-byte int data>,
-                 'egroup4': <2-byte int data>,
-                 'egroup5': <2-byte int data>,
-                 'egroup6': <2-byte int data>,
-                }
-            ]
+        Parameters:
+            raw_data (list): A list of str, each str is a single line in the
+                memory monitoring file.
 
-        This is the normal output of the parser.
+        Returns:
+            parsed_data (list): Same form as defined in 'parse' method.
+                This is the normal output of the parser.
         '''
         pass
 
+        return parsed_data
+
     @staticmethod
     def output_to_csv(filename, parsed_data):
-        '''Write parsed memory data to a CSV file'''
+        '''Write parsed memory data to a CSV file.
+
+        Parameters:
+            filename (Path or str): Output CSV filename, full path or relative
+                path.
+            parsed_data (list): Same form as defined in 'parse' method.
+
+        Returns: None
+        '''
         pass
 
 
