@@ -1,0 +1,16 @@
+language: python
+python: 3.7.2
+dist: xenial
+sudo: true
+
+script:
+    - cd ./test
+    - ./GbtxMemAnalyzer.unittest.py
+    - ./GbtxMemParser.unittest.py
+
+deploy:
+    provider: releases
+    api_key:
+        secure: QVJxTmB1h7WPG9WE8JBUcFrW43xUJwfd2kW5rVxiLoUrWf3ACELPPIbISukLz/0TgHM5ghJzEcQg29Oy6w9SZQolBu7c5jjT7RgrY9k4Qist/XaIbYD3ebYETiiTetKDCrd3w2HB8sZWe7FWmvw5R/xuPYOiPXleONi4Nxp05yILcawckX6UETYaleJgD9E+IfCYCGfDaNLTPtqBHtUtf5bX00IaVlIGTzA1s8VYJwoHzHOYhSpUdl2ijCL4KrSuxRGsxUKFwQWx8j7UVYkludQh8LXiY0L1Vz9fhkrZ8Zd8chCZf8bZHenckLP3yF7DzaVGMdvo2j4UUHjaJorTma0/FRpv+WjteioafHfgexJZEqoi1PsvtuGWA450A3peL14UOKd8ws6jMgVxcG+XfJ01FCC8JCVFlZUsN0r857k4qGC4cTHzqq9o6kysUf8e9Ds8gDLLMlNe3vCw4rYvMciZ4Dq5j0mK1W937AWsZU6tUMWO/uYQz57BoHW2rFGRzJ/i60c4zxWjl9v1cFyPz3vhK5QZeJ4H5U61vLK9uMDfsPi5c5bdrI2hg5QHSFRNb1+XMkFOIHc+zkFAwYh/xVi1MtyKSjuKsnzuphi9OQITnH9fE1NzN8GhIEDD4u7u8E218X+d46KFwWOerGxK7InqSB7cTxX6Lnn7qTI+2rk=
+    on:
+        tags: true
