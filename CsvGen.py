@@ -51,17 +51,18 @@ def cyclic_pattern(head=0b00000000, length=256, offset=0):
 # Generate csv files #
 ######################
 
-for idx in range(0, 20):
-    # Fixed pattern
-    write_to_comet_csv(
-        output_dir / Path('fixed') / Path('nTx_seq_{}.csv'.format(idx)),
-        serial_numbers[idx],
-        fixed_pattern()
-    )
+if __name__ == '__main__':
+    for idx in range(0, 20):
+        # Fixed pattern
+        write_to_comet_csv(
+            output_dir / Path('fixed') / Path('nTx_seq_{}.csv'.format(idx)),
+            serial_numbers[idx],
+            fixed_pattern()
+        )
 
-    # Cyclic pattern
-    write_to_comet_csv(
-        output_dir / Path('cyclic') / Path('nTx_seq_{}.csv'.format(idx)),
-        serial_numbers[idx],
-        cyclic_pattern()
-    )
+        # Cyclic pattern
+        write_to_comet_csv(
+            output_dir / Path('cyclic') / Path('nTx_seq_{}.csv'.format(idx)),
+            serial_numbers[idx],
+            cyclic_pattern()
+        )
