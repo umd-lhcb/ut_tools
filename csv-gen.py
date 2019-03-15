@@ -1,8 +1,10 @@
 #!/usr/bin/env python
-#
-# Authors: Ramond Su, Yipeng Sun
-# License: BSD 2-clause
-# Last Change: Fri Mar 15, 2019 at 01:49 AM -0400
+'''
+Created on Wed Jan 23 08:42:00 2019
+
+@author: Raymond Su, Yipeng Sun
+@license: BSD 2-clause
+'''
 
 from pathlib import Path
 
