@@ -93,11 +93,14 @@ def check_match(ref_data, parsed_data):
 def check_shift_single_byte(ref_byte, actual_byte):
     shift = 0
 
-    for i in range(0, 4):
-        if actual_byte << i == ref_byte:
+    three_cycles_str = '{0:08b}'.format(ref_byte) * 3
+    actual_byte_str = '{0:08b}'.format(actual_byte)
+
+    for i in range(0, 8):
+        if three_cycles_str[8+i:16+i] == actual_byte_str:
             shift = i
             break
-        elif actual_byte >> i == ref_byte:
+        elif three_cycles_str[8-i:16-i] == actual_byte_str:
             shift = -i
             break
 
@@ -118,8 +121,8 @@ def check_shift(ref_data, parsed_data):
                 }
             each int represents number of bits shifted.
 
-            If it is not a shift, rather a mismatch, the int should be set to an
-            integer that is >= 4.
+            If it is a mismatch, rather than a shift, the return value should be
+            set to an integer that is >= 8.
 
             Note that only the elinks present in 'ref_data' will be compared.
     '''
