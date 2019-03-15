@@ -9,9 +9,9 @@ Created on Thu Mar 14 16:16:49 2019
 from CsvGen import fixed_patten, cyclic_pattern
 
 
-##############################
-# Generate reference results #
-##############################
+###############################
+# Generate reference patterns #
+###############################
 
 def ref_fixed_pattern(mode, length, egroups):
     '''Generate a reference fixed pattern.
