@@ -2,7 +2,7 @@
 #
 # Authors: Ramond Su, Yipeng Sun
 # License: BSD 2-clause
-# Last Change: Fri Mar 15, 2019 at 01:44 AM -0400
+# Last Change: Fri Mar 15, 2019 at 01:49 AM -0400
 
 from pathlib import Path
 
@@ -33,13 +33,16 @@ def write_to_comet_csv(filename, serial, body, mode='w', eol='\n'):
 ############
 
 def fixed_pattern(mode=0b01010101, length=256):
-    return ['{0:08b}'.format(mode) for i in range(0, length)]
+    return ['{0:08b}'.format(mode) for n in range(0, length)]
+
+
+def ref_cyclic_pattern(head, length):
+    return ['{0:08b}'.format(n) for n in range(head, head+length)]
 
 
 def cyclic_pattern(head=0b00000000, length=256, start_idx=0):
-    ref_cyclic_pattern = ['{0:08b}'.format(n)
-                          for n in range(head, head+length)]
-    return ref_cyclic_pattern[start_idx:] + ref_cyclic_pattern[:start_idx]
+    ref_pattern = ref_cyclic_pattern(head, length)
+    return ref_pattern[start_idx:] + ref_pattern[:start_idx]
 
 
 ######################
