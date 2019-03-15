@@ -19,13 +19,20 @@ class GbtxMemParser(object):
         Returns:
             parsed_data (list): A list of dictionary. Each dictionary has the
                 following form:
-                    {'egroup0': <2-byte int data>,
-                     'egroup1': <2-byte int data>,
-                     'egroup2': <2-byte int data>,
-                     'egroup3': <2-byte int data>,
-                     'egroup4': <2-byte int data>,
-                     'egroup5': <2-byte int data>,
-                     'egroup6': <2-byte int data>}
+                    {'elink0-0': <1-byte int>,
+                     'elink0-1': <1-byte int>,
+                     'elink1-0': <1-byte int>,
+                     'elink1-1': <1-byte int>,
+                     'elink2-0': <1-byte int>,
+                     'elink2-1': <1-byte int>,
+                     'elink3-0': <1-byte int>,
+                     'elink3-1': <1-byte int>,
+                     'elink4-0': <1-byte int>,
+                     'elink4-1': <1-byte int>,
+                     'elink5-0': <1-byte int>,
+                     'elink5-1': <1-byte int>,
+                     'elink6-0': <1-byte int>,
+                     'elink6-1': <1-byte int>}
                 Note that the header is removed from the final result.
         '''
         with open(self.filename) as f:
@@ -60,54 +67,3 @@ class GbtxMemParser(object):
         Returns: None
         '''
         pass
-
-
-def GetData(filepath):  # method will parse a given txt file path
-    with open(filepath) as file:
-         data = file.readlines()  # place each line into a list named 'data'
-    return data
-
-
-def ExtractBits(x, y, memlist):  # returns the xth and yth digits
-    bitlist = []
-
-    for line in memlist:
-        bitlist.append(line[x-1:y])
-
-    return bitlist
-
-
-#####################################################
-############ Method sent to the Analyzer ############
-#####################################################
-def PrepAnalyzer(filepath):
-
-    x = 7   # assuming locations do not change, this is where the bits are
-    y = 8
-    raw_data = GetData(filepath)                  # import data from csv
-    processed_data = ExtractBits(x, y, raw_data)  # take out hexes from csv
-
-    return processed_data
-#####################################################
-#####################################################
-#####################################################
-
-
-#####################################################
-##################  Debug Methods  ##################
-#####################################################
-
-def PrintLines(memlist):  # debug method, spits out entire raw list
-    for line in memlist:
-        print(line)
-
-
-def maindebug(filepath, x, y):  # standard procedure, run through every method
-    print("\n\nProcessing",filepath,"\n\n")
-    data = GetData(filepath)                # import data from csv
-    bitlist = ExtractBits(x, y, data)       # take out hexadecimal bits from csv
-    print(bitlist)
-    print("\n")
-
-#maindebug("mem_mon_table-const.txt", 7, 8)  # bits are on indices 6 and 7
-#maindebug("mem_mon_table-cyclic.txt", 7, 8)  # bits are on indices 6 and 7
