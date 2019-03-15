@@ -118,6 +118,12 @@ class GbtxCheckShiftTester(unittest.TestCase):
             -1
         )
 
+    def test_check_shift_single_byte_mismatch(self):
+        self.assertEqual(
+            check_shift_single_byte(0b00010001, 0b10001001),
+            8
+        )
+
     def test_check_shift(self):
         ref_data = ref_cyclic_pattern(
             [0x01, 0x02, 0x04], ['elink0-0', 'elink2-0', 'elink4-0'],
