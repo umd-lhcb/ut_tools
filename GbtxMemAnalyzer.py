@@ -57,7 +57,6 @@ def ref_cyclic_pattern(head, elinks, period, length=1000):
     Returns:
         ref_data (list): Same form as defined in 'ref_fixed_pattern'.
     '''
-    # Need to use imported cyclic_pattern to implement this.
     pass
 
 
