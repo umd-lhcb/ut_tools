@@ -35,9 +35,11 @@ class GbtxMemParser(object):
                      'elink6-1': <1-byte int>}
                 Note that the header is removed from the final result.
         '''
-        with open(self.filename) as f:
-            pass
-
+        with open(self.filename) as f:  # open txt file
+            raw_data = f.readlines()    # create list "raw_data" from file
+            
+        return self.dissect_str_to_dict(raw_data)
+            
     @staticmethod
     def dissect_str_to_dict(raw_data):
         '''Take a list of string, dissecting them to list of dictionary.
@@ -51,6 +53,31 @@ class GbtxMemParser(object):
                 This is the normal output of the parser.
         '''
         # Egroup ordering: 6-5-4-3-2-1 (will)
+        #                  4-3-2-1-6-5 ????
+        
+        
+        default = (245,95)    # placeholder- (245,95) = (F5, 5F)
+        egroup_list = []
+        egroup_dict = {       # sample egroup_dict, dummy value s
+                'egroup0': default,
+                'egroup1': default,
+                'egroup2': default,
+                'egroup3': default,
+                'egroup4': default,
+                'egroup5': default,
+                'egroup6': default
+                 }  
+    
+        for string_of_bytes in raw_data:  # grab each line of bytes
+            elinks = []
+            for index, byte in enumerate(string_of_bytes):  
+                if index % 2 == 0 and not index > 29:  # we will only work with even indices
+                    elinks.append((int(string_of_bytes[index:index+2],16), int(string_of_bytes[index+2:index+4],16)))
+                    
+                    ''' assuming we have string x = "AABBCCDD"
+                    (x[0:2] , x[2:4]) = (AA, BB)
+                    (x[4:6] , x[6:8]) = (CC, DD) '''
+                    
         pass
 
     @staticmethod
@@ -65,3 +92,8 @@ class GbtxMemParser(object):
         Returns: None
         '''
         pass
+
+
+
+test = GbtxMemParser("samples/mem_mon_table-fixed-20190226.txt")
+test.parse()
