@@ -50,7 +50,8 @@ class GbtxMemParser(object):
             parsed_data (list): Same form as defined in 'parse' method.
                 This is the normal output of the parser.
         '''
-        # Egroup ordering: 6-5-4-3-2-1 (will)
+        # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1)
+        #    (will)
         pass
 
     @staticmethod
