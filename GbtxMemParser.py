@@ -72,17 +72,17 @@ class GbtxMemParser(object):
                  'elink6-1': default,
                  }  
     
-        for string_of_bytes in raw_data:  # grab each line of bytes
+        for string_of_hexes in raw_data:  # grab each line of bytes
             elinks = []
-            for bit in string_of_bytes:  
-                if bit != "\n":
-                    elinks.append(int(bit,16))
+            for digit in string_of_hexes: 
+                if digit != "\n":  # get rid of \n on every line
+                    elinks.append(int(digit, 16))
 
         # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1)
         #    (will)
         
-        print(elinks)
-        return dict_list
+        print(elinks)  # debug
+        return dict_list  
 
     @staticmethod
     def output_to_csv(filename, parsed_data):
