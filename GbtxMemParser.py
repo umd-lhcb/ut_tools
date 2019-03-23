@@ -53,30 +53,36 @@ class GbtxMemParser(object):
                 This is the normal output of the parser.
         '''
         
-        default = (245,95)    # placeholder- (245,95) = (F5, 5F)
-        egroup_list = []
-        egroup_dict = {       # sample egroup_dict, dummy value s
-                'egroup0': default,
-                'egroup1': default,
-                'egroup2': default,
-                'egroup3': default,
-                'egroup4': default,
-                'egroup5': default,
-                'egroup6': default
+        default = (204)    # placeholder- (204) = (CC)
+        dict_list = []
+        elink_dict = {       # sample egroup_dict, dummy values
+                 'elink0-0': default,
+                 'elink0-1': default,
+                 'elink1-0': default,
+                 'elink1-1': default,
+                 'elink2-0': default,
+                 'elink2-1': default,
+                 'elink3-0': default,
+                 'elink3-1': default,
+                 'elink4-0': default,
+                 'elink4-1': default,
+                 'elink5-0': default,
+                 'elink5-1': default,
+                 'elink6-0': default,
+                 'elink6-1': default,
                  }  
     
         for string_of_bytes in raw_data:  # grab each line of bytes
             elinks = []
-            for index, byte in enumerate(string_of_bytes):  
-                if index % 2 == 0 and not index > 29:  # we will only work with even indices
-                    elinks.append((int(string_of_bytes[index:index+2],16), int(string_of_bytes[index+2:index+4],16)))
-                    
-                    ''' assuming we have string x = "AABBCCDD"
-                    (x[0:2] , x[2:4]) = (AA, BB)
-                    (x[4:6] , x[6:8]) = (CC, DD) '''
+            for bit in string_of_bytes:  
+                if bit != "\n":
+                    elinks.append(int(bit,16))
+
         # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1)
         #    (will)
-        pass
+        
+        print(elinks)
+        return dict_list
 
     @staticmethod
     def output_to_csv(filename, parsed_data):
@@ -92,6 +98,6 @@ class GbtxMemParser(object):
         pass
 
 
-
+# debug
 test = GbtxMemParser("samples/mem_mon_table-fixed-20190226.txt")
 test.parse()
