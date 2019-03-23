@@ -65,8 +65,8 @@ class GbtxMemParser(object):
                  'elink3-0': default,
                  'elink3-1': default,
                  'elink4-0': default,
-                 'elink4-1': default,
-                 'elink5-0': default,
+                 'elink4-1': default,  # key[5] = 4, key[7] = 1 : elink identifiers
+                 'elink5-0': default, 
                  'elink5-1': default,
                  'elink6-0': default,
                  'elink6-1': default,
@@ -74,10 +74,27 @@ class GbtxMemParser(object):
     
         for string_of_hexes in raw_data:  # grab each line of bytes
             elinks = []
-            for digit in string_of_hexes: 
-                if digit != "\n":  # get rid of \n on every line
-                    elinks.append(int(digit, 16))
-
+            print(string_of_hexes)
+            
+            # extract the data from the line we grabbed, place in "elinks"
+            for index, digit in enumerate(string_of_hexes): 
+                # use every even index, skipping the header, and extract 2 digits
+                if digit != "\n" and index > 3 and index % 2 == 0:
+                    elinks.append(int(string_of_hexes[index:index+2], 16))
+                    
+            # edit the dictionary and save a copy of it later
+            for key in elink_dict:
+                for index, elink in enumerate(elinks):
+                    if index > 3 and index % 2 != 0:  # count evens
+                        pass
+                    pass
+                pass
+            break
+        
+    
+                        
+            
+            
         # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1)
         #    (will)
         
