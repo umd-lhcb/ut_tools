@@ -35,6 +35,7 @@ class GbtxMemParser(object):
                      'elink6-1': <1-byte int>}
                 Note that the header is removed from the final result.
         '''
+        
         with open(self.filename) as f:  # open txt file
             raw_data = f.readlines()    # create list "raw_data" from file
             
@@ -64,27 +65,31 @@ class GbtxMemParser(object):
                  'elink2-1': default,
                  'elink3-0': default,
                  'elink3-1': default,
-                 'elink4-0': default,
-                 'elink4-1': default,  # key[5] = 4, key[7] = 1 : elink identifiers
+                 'elink4-0': default,  #
+                 'elink4-1': default,  # key[5] = 4, key[7] = 1 <-> elink identifiers
                  'elink5-0': default, 
                  'elink5-1': default,
                  'elink6-0': default,
                  'elink6-1': default,
                  }  
     
-        # begin by looping through every line in the memory file        
-        for string_of_hexes in raw_data:  # grab each line
-            elinks = []  # refresh our list every loop
+          # begin by looping through every line in the data file        
+        for string_of_hexes in raw_data: 
+            elinks = []  # make sure to refresh our list every loop
             
-            # extract the data from the line we grabbed, place in list "elinks"
+              # extract the data from the line we grabbed, place in list "elinks"
             for index, digit in enumerate(string_of_hexes): 
-                # use every even index, skipping the header, and extract 2 digits
+                
+                  # use every even index, skipping the header (indices 0-3), 
+                  # and extract 2 digits which we convert to decimal.
+                  # every line has a pesky "\n" at the end so we remove it
                 if digit != "\n" and index > 3 and index % 2 == 0:
                     elinks.append(int(string_of_hexes[index:index+2], 16))
                 
-            # match elink identifiers (keys in dict) to index of each byte
+              # match elink identifiers (see dict) to index of each byte
             for key in elink_dict:
                 x, y = int(key[5]), int(key[7])  # figure out which elink we have
+                
                 for index, elink in enumerate(elinks):
                     # look at every elink and match identifiers to index
                     if index == ((-1)*(2*x + y - 13)):  # magical formula, see comment
@@ -92,7 +97,6 @@ class GbtxMemParser(object):
             
             dict_list.append(elink_dict)  # save our finalized dictionary
             
-        
         '''
         0-0 -> index 13
         0-1 -> index 12
@@ -109,9 +113,11 @@ class GbtxMemParser(object):
         
         Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1)
           (will)
-        
+          
+        clearly only works if the order is as said above... if it turns out to
+        be false then we will have to use something like OrderedDict
         '''
-
+        
         return dict_list  
 
     @staticmethod
@@ -125,9 +131,7 @@ class GbtxMemParser(object):
 
         Returns: None
         '''
+        
+        
         pass
 
-
-# debug
-test = GbtxMemParser("samples/mem_mon_table-fixed-20190226.txt")
-test.parse()
