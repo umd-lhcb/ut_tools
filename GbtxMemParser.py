@@ -72,33 +72,46 @@ class GbtxMemParser(object):
                  'elink6-1': default,
                  }  
     
-        for string_of_hexes in raw_data:  # grab each line of bytes
-            elinks = []
-            print(string_of_hexes)
+        # begin by looping through every line in the memory file        
+        for string_of_hexes in raw_data:  # grab each line
+            elinks = []  # refresh our list every loop
             
-            # extract the data from the line we grabbed, place in "elinks"
+            # extract the data from the line we grabbed, place in list "elinks"
             for index, digit in enumerate(string_of_hexes): 
                 # use every even index, skipping the header, and extract 2 digits
                 if digit != "\n" and index > 3 and index % 2 == 0:
                     elinks.append(int(string_of_hexes[index:index+2], 16))
-                    
-            # edit the dictionary and save a copy of it later
+                
+            # match elink identifiers (keys in dict) to index of each byte
             for key in elink_dict:
+                x, y = int(key[5]), int(key[7])  # figure out which elink we have
                 for index, elink in enumerate(elinks):
-                    if index > 3 and index % 2 != 0:  # count evens
-                        pass
-                    pass
-                pass
-            break
-        
-    
-                        
+                    # look at every elink and match identifiers to index
+                    if index == ((-1)*(2*x + y - 13)):  # magical formula, see comment
+                        elink_dict[key] = elink  # found value, save
             
+            dict_list.append(elink_dict)  # save our finalized dictionary
             
-        # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1)
-        #    (will)
         
-        print(elinks)  # debug
+        '''
+        0-0 -> index 13
+        0-1 -> index 12
+        1-0 -> index 11
+        1-1 -> index 10
+        .
+        6-1 -> index 1
+        x-y -> index z
+        
+        it would be easy if 0-0 -> 0, 0-1 -> 1, because then it'd be 2x+y=z
+        but since we start at 13, we can subtract 13 and then take the negative
+        
+        (-1)*(2x+y-13)
+        
+        Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1)
+          (will)
+        
+        '''
+
         return dict_list  
 
     @staticmethod
