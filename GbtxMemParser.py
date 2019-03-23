@@ -52,9 +52,6 @@ class GbtxMemParser(object):
             parsed_data (list): Same form as defined in 'parse' method.
                 This is the normal output of the parser.
         '''
-        # Egroup ordering: 6-5-4-3-2-1 (will)
-        #                  4-3-2-1-6-5 ????
-        
         
         default = (245,95)    # placeholder- (245,95) = (F5, 5F)
         egroup_list = []
@@ -77,7 +74,8 @@ class GbtxMemParser(object):
                     ''' assuming we have string x = "AABBCCDD"
                     (x[0:2] , x[2:4]) = (AA, BB)
                     (x[4:6] , x[6:8]) = (CC, DD) '''
-                    
+        # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1)
+        #    (will)
         pass
 
     @staticmethod
