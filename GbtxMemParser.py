@@ -57,7 +57,7 @@ class GbtxMemParser(object):
         
         default = (204)    # placeholder- (204) = (CC)
         dict_list = []
-        sample_dict = {       # sample egroup_dict, dummy values
+        elink_dict = {       # sample egroup_dict, dummy values
                  'elink6-0': default,
                  'elink6-1': default,
                  'elink5-0': default,
@@ -79,7 +79,6 @@ class GbtxMemParser(object):
           # begin by looping through every line in the data file        
         for string_of_hexes in raw_data: 
             unsorted_elinks = []  # make sure to refresh our list every loop
-            elink_dict = sample_dict.copy()  # refresh dict every loop
             
               # extract the data from the line we grabbed, sort into elinks
             for index, digit in enumerate(string_of_hexes): 
@@ -99,7 +98,7 @@ class GbtxMemParser(object):
                     if index == (2*(6-x)+y):  # magic formula
                         elink_dict[key] = value  # found match  
                 
-            dict_list.append(elink_dict)  # save our finalized dictionary into list
+                dict_list.append(elink_dict)  # save our finalized dictionary into list
         
         return dict_list  # after we loop through every line, return our list
     
