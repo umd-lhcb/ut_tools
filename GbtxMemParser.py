@@ -6,6 +6,7 @@ Created on Mon Mar 11 12:41:00 2019
 @license: BSD 2-clause
 '''
 
+import csv
 
 class GbtxMemParser(object):
     def __init__(self, filename):
@@ -57,20 +58,20 @@ class GbtxMemParser(object):
         default = (204)    # placeholder- (204) = (CC)
         dict_list = []
         elink_dict = {       # sample egroup_dict, dummy values
-                 'elink0-0': default,
-                 'elink0-1': default,
-                 'elink1-0': default,
-                 'elink1-1': default,
-                 'elink2-0': default,
-                 'elink2-1': default,
-                 'elink3-0': default,
-                 'elink3-1': default,
-                 'elink4-0': default,  # elink identifiers (strings)
-                 'elink4-1': default,  # key[5] = 4, key[7] = 1 
-                 'elink5-0': default, 
-                 'elink5-1': default,
                  'elink6-0': default,
                  'elink6-1': default,
+                 'elink5-0': default,
+                 'elink5-1': default,
+                 'elink4-0': default,
+                 'elink4-1': default,
+                 'elink3-0': default,
+                 'elink3-1': default,
+                 'elink2-0': default,  # elink identifiers (strings)
+                 'elink2-1': default,  # key[5] = 2, key[7] = 1 
+                 'elink1-0': default, 
+                 'elink1-1': default,
+                 'elink0-0': default,
+                 'elink0-1': default,
                  }  
         
         # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1), 0 (0,1)
@@ -98,7 +99,7 @@ class GbtxMemParser(object):
                         elink_dict[key] = value  # found match  
                 
             dict_list.append(elink_dict)  # save our finalized dictionary into list
-            
+        
         return dict_list  # after we loop through every line, return our list
     
         '''
@@ -121,7 +122,7 @@ class GbtxMemParser(object):
         '''
 
     @staticmethod
-    def output_to_csv(filename, parsed_data):
+    def output_to_csv(parsed_data, filename="exports/unnamed.csv"):
         '''Write parsed memory data to a CSV file.
 
         Parameters:
@@ -131,7 +132,25 @@ class GbtxMemParser(object):
 
         Returns: None
         '''
+
+        if filename == "exports/unnamed.csv":  # test if no name given
+            print("\nFilepath unspecificed. Defaulting to", filename,"\n")
         
         
-        pass
+        try:    # enclose filewriting in a try block to catch errors
+            csv_headers = list(parsed_data[0].keys())  # get keys for csv headers
+            with open(filename, 'w', newline='') as csvfile:  # open csv file
+                # use csv.DictWriter to convert Dict to CSV
+                    writer = csv.DictWriter(csvfile, fieldnames=csv_headers)
+                    writer.writeheader()  
+                    
+                    for elink_dict in parsed_data:  # work on a dict by dict basis
+                        writer.writerow(elink_dict)
+                    
+        finally:
+            csvfile.close() 
+            
+        
+        
+        return
 
