@@ -98,7 +98,7 @@ class GbtxMemParser(object):
                     if index == (2*(6-x)+y):  # magic formula
                         elink_dict[key] = value  # found match  
                 
-            dict_list.append(elink_dict)  # save our finalized dictionary into list
+                dict_list.append(elink_dict)  # save our finalized dictionary into list
         
         return dict_list  # after we loop through every line, return our list
     
