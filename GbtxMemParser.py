@@ -65,60 +65,60 @@ class GbtxMemParser(object):
                  'elink2-1': default,
                  'elink3-0': default,
                  'elink3-1': default,
-                 'elink4-0': default,  #
-                 'elink4-1': default,  # key[5] = 4, key[7] = 1 <-> elink identifiers
+                 'elink4-0': default,  # elink identifiers (strings)
+                 'elink4-1': default,  # key[5] = 4, key[7] = 1 
                  'elink5-0': default, 
                  'elink5-1': default,
                  'elink6-0': default,
                  'elink6-1': default,
                  }  
-    
+        
+        # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1), 0 (0,1)
+        
           # begin by looping through every line in the data file        
         for string_of_hexes in raw_data: 
-            elinks = []  # make sure to refresh our list every loop
+            unsorted_elinks = []  # make sure to refresh our list every loop
             
-              # extract the data from the line we grabbed, place in list "elinks"
+              # extract the data from the line we grabbed, sort into elinks
             for index, digit in enumerate(string_of_hexes): 
                 
                   # use every even index, skipping the header (indices 0-3), 
-                  # and extract 2 digits which we convert to decimal.
+                  # and extract that index and the next one which we convert to decimal.
                   # every line has a pesky "\n" at the end so we remove it
                 if digit != "\n" and index > 3 and index % 2 == 0:
-                    elinks.append(int(string_of_hexes[index:index+2], 16))
-                
-              # match elink identifiers (see dict) to index of each byte
+                    unsorted_elinks.append(int(string_of_hexes[index:index+2], 16))
+                    
+              # match each key in the sample dictionary to its correct index
             for key in elink_dict:
-                x, y = int(key[5]), int(key[7])  # figure out which elink we have
+                x, y = int(key[5]), int(key[7])  # see sample dict 
                 
-                for index, elink in enumerate(elinks):
-                    # look at every elink and match identifiers to index
-                    if index == ((-1)*(2*x + y - 13)):  # magical formula, see comment
-                        elink_dict[key] = elink  # found value, save
+                  # use magic formula to match values to keys... see comment below
+                for index, value in enumerate(unsorted_elinks):
+                    if index == (2*(6-x)+y):  # magic formula
+                        elink_dict[key] = value  # found match  
+                
+            dict_list.append(elink_dict)  # save our finalized dictionary into list
             
-            dict_list.append(elink_dict)  # save our finalized dictionary
-            
+        return dict_list  # after we loop through every line, return our list
+    
         '''
-        0-0 -> index 13
-        0-1 -> index 12
-        1-0 -> index 11
-        1-1 -> index 10
-        .
-        6-1 -> index 1
+        0-0 -> index 12
+        0-1 -> index 13
+        1-0 -> index 10
+        1-1 -> index 11
+        ...
+        5-0 -> index 2
+        5-1 -> index 3
+        6-0 -> index 1
+        6-1 -> index 0
+        
         x-y -> index z
+        z = (2(6-x) + y)
         
-        it would be easy if 0-0 -> 0, 0-1 -> 1, because then it'd be 2x+y=z
-        but since we start at 13, we can subtract 13 and then take the negative
+        see github issue 8 (https://github.com/umd-lhcb/comet_tools/issues/8)
+        for explanation on magic formula
         
-        (-1)*(2x+y-13)
-        
-        Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1)
-          (will)
-          
-        clearly only works if the order is as said above... if it turns out to
-        be false then we will have to use something like OrderedDict
         '''
-        
-        return dict_list  
 
     @staticmethod
     def output_to_csv(filename, parsed_data):
