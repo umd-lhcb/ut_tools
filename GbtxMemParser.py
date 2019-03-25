@@ -137,21 +137,16 @@ class GbtxMemParser(object):
         if filename == "exports/unnamed.csv":  # test if no name given
             print("\nFilepath unspecificed. Defaulting to", filename,"\n")
         
-        
-        try:    # enclose filewriting in a try block to catch errors
-            csv_headers = list(parsed_data[0].keys())  # get keys for csv headers
-            with open(filename, 'w', newline='') as csvfile:  # open csv file
-                # use csv.DictWriter to convert Dict to CSV
-                    writer = csv.DictWriter(csvfile, fieldnames=csv_headers)
-                    writer.writeheader()  
+        csv_headers = list(parsed_data[0].keys())  # get keys for csv headers
+        with open(filename, 'w', newline='') as csvfile:  # open csv file
+            # use csv.DictWriter to convert Dict to CSV
+                writer = csv.DictWriter(csvfile, fieldnames=csv_headers)
+                writer.writeheader()  # write headers
+                
+                for elink_dict in parsed_data:  # work on a dict by dict basis
+                    writer.writerow(elink_dict) # write each dict onto a single row
                     
-                    for elink_dict in parsed_data:  # work on a dict by dict basis
-                        writer.writerow(elink_dict)
-                    
-        finally:
-            csvfile.close() 
-            
-        
         
         return
+        
 
