@@ -74,7 +74,8 @@ class GbtxMemParser(object):
             'elink0-1': default,
         }
 
-        # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1), 0 (0,1)
+        # Elink ordering: 6 (0,1) ,5 (0,1), 4 (0,1), 3 (0,1), 2 (0,1), 1 (0,1),
+        #                 0 (0,1)
 
         # begin by looping through every line in the data file
         for string_of_hexes in raw_data:
