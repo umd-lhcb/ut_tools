@@ -15,14 +15,14 @@ class GbtxRefPatternTester(unittest.TestCase):
         self.assertEqual(
             ref_fixed_pattern([0x01, 0x04], ['elink0-0', 'elink0-1'], 3),
             [
-                {'elink0-0': 0xFF01,
-                 'elink0-1': 0xFF04},
+                {'elink0-0': 0x01,
+                 'elink0-1': 0x04},
 
-                {'elink0-0': 0xFF01,
-                 'elink0-1': 0xFF04},
+                {'elink0-0': 0x01,
+                 'elink0-1': 0x04},
 
-                {'elink0-0': 0xFF01,
-                 'elink0-1': 0xFF04}
+                {'elink0-0': 0x01,
+                 'elink0-1': 0x04}
             ]
         )
 
@@ -33,45 +33,45 @@ class GbtxRefPatternTester(unittest.TestCase):
                                [2, 3, 7],
                                length=10),
             [
-                {'elink0-0': 0xFF01,
-                 'elink2-0': 0xFF02,
-                 'elink4-0': 0xFF04},
+                {'elink0-0': 0x01,
+                 'elink2-0': 0x02,
+                 'elink4-0': 0x04},
 
-                {'elink0-0': 0xFF02,
-                 'elink2-0': 0xFF03,
-                 'elink4-0': 0xFF05},
+                {'elink0-0': 0x02,
+                 'elink2-0': 0x03,
+                 'elink4-0': 0x05},
 
-                {'elink0-0': 0xFF01,
-                 'elink2-0': 0xFF04,
-                 'elink4-0': 0xFF06},
+                {'elink0-0': 0x01,
+                 'elink2-0': 0x04,
+                 'elink4-0': 0x06},
 
-                {'elink0-0': 0xFF02,
-                 'elink2-0': 0xFF02,
-                 'elink4-0': 0xFF07},
+                {'elink0-0': 0x02,
+                 'elink2-0': 0x02,
+                 'elink4-0': 0x07},
 
-                {'elink0-0': 0xFF01,
-                 'elink2-0': 0xFF03,
-                 'elink4-0': 0xFF08},
+                {'elink0-0': 0x01,
+                 'elink2-0': 0x03,
+                 'elink4-0': 0x08},
 
-                {'elink0-0': 0xFF02,
-                 'elink2-0': 0xFF04,
-                 'elink4-0': 0xFF09},
+                {'elink0-0': 0x02,
+                 'elink2-0': 0x04,
+                 'elink4-0': 0x09},
 
-                {'elink0-0': 0xFF01,
-                 'elink2-0': 0xFF02,
-                 'elink4-0': 0xFF0A},
+                {'elink0-0': 0x01,
+                 'elink2-0': 0x02,
+                 'elink4-0': 0x0A},
 
-                {'elink0-0': 0xFF02,
-                 'elink2-0': 0xFF03,
-                 'elink4-0': 0xFF04},
+                {'elink0-0': 0x02,
+                 'elink2-0': 0x03,
+                 'elink4-0': 0x04},
 
-                {'elink0-0': 0xFF01,
-                 'elink2-0': 0xFF04,
-                 'elink4-0': 0xFF05},
+                {'elink0-0': 0x01,
+                 'elink2-0': 0x04,
+                 'elink4-0': 0x05},
 
-                {'elink0-0': 0xFF02,
-                 'elink2-0': 0xFF02,
-                 'elink4-0': 0xFF06},
+                {'elink0-0': 0x02,
+                 'elink2-0': 0x02,
+                 'elink4-0': 0x06},
             ]
         )
 
