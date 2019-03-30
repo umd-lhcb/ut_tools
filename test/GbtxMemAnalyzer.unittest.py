@@ -115,7 +115,7 @@ class GbtxCheckShiftTester(unittest.TestCase):
     def test_check_shift_single_byte_negative(self):
         self.assertEqual(
             check_shift_single_byte(0b00010001, 0b10001000),
-            -1
+            3
         )
 
     def test_check_shift_single_byte_mismatch(self):

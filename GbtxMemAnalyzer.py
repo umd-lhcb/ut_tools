@@ -89,18 +89,25 @@ def check_match(ref_data, parsed_data):
 # Check if the parsed data has shifted #
 ########################################
 
-def check_shift_single_byte(ref_byte, actual_byte):
+def check_shift_single_byte(expected_byte, parsed_byte):
+    '''Check the shift of a single byte.
+
+    Parameters:
+        expected_byte (int)
+        parsed_byte (int)
+
+    Returns:
+        shift (int): Number of right shifts. Note this this is always a
+        non-negative integer between 0-8, where 8 indicates error.
+    '''
     shift = 8
 
-    three_cycles_str = '{0:08b}'.format(ref_byte) * 3
-    actual_byte_str = '{0:08b}'.format(actual_byte)
+    expected_byte_two_cycles = '{0:08b}'.format(expected_byte) * 2
+    parsed_byte = '{0:08b}'.format(parsed_byte)
 
     for i in range(0, 8):
-        if three_cycles_str[8+i:16+i] == actual_byte_str:
+        if expected_byte_two_cycles[0+i:8+i] == parsed_byte:
             shift = i
-            break
-        elif three_cycles_str[8-i:16-i] == actual_byte_str:
-            shift = -i
             break
 
     return shift
