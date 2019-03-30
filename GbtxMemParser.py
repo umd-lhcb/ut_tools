@@ -124,7 +124,7 @@ class GbtxMemParser(object):
         '''
 
     @staticmethod
-    def output_to_csv(parsed_data, filename="exports/unnamed.csv"):
+    def output_to_csv(parsed_data, filename="gen/parsed_elinks.csv"):
         '''Write parsed memory data to a CSV file.
 
         Parameters:
