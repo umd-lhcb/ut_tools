@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+'''
+@author: Manuel Franco Sevilla
+@license: BSD 2-clause
+'''
+
 
 #####################################################################################
 ## GbtMemLongestPatterns: Finds the longest ascending/descending continuous patterns
@@ -28,7 +33,7 @@ def FindLongestPatterns(filename, count):
     ENames = ElinkNames()
 
     lastshift = -1 # Last shift needed to have a continuous pattern
-    
+
     lastrow2 = [-1]*Nelinks  # Bytes from the row before last
     lastrow  = [-1]*Nelinks  # Bytes from the last row
     lastshift= [-1]*Nelinks  # Last shift needed for a continuous pattern
@@ -126,5 +131,3 @@ for gbtx in range(len(longestAll)):
             print(f'{longestAll[gbtx][comet][elink]:>10}', end =" ")
         print()
     print()
-    
-

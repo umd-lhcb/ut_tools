@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 '''
-Created on Thu Mar 14 16:16:49 2019
-
 @author: Jorge Ramirez, Nitzan Hirshberg, Raymond Su, Ben Flaggs, Yipeng Sun
 @license: BSD 2-clause
 '''

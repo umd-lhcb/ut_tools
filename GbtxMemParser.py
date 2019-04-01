@@ -1,7 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 '''
-Created on Mon Mar 11 12:41:00 2019
-
 @author: Jorge Ramirez
 @license: BSD 2-clause
 '''
