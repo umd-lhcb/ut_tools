@@ -94,9 +94,10 @@ threshold = 10
 comets = ['a', 'b']
 longestAll = []
 for gbtx in range (1,7):
+    dataTakenDate = sys.argv[1]
     longestAll.append([])
     for comet in comets:
-        filename = 'input/comet_' + comet + '-20190329/comet_' + comet + '-gbtx' + str(gbtx) + '.txt'
+        filename = 'input/comet_' + comet + '-{}/comet_'.format(dataTakenDate) + comet + '-gbtx' + str(gbtx) + '.txt'
         longUp   = FindLongestPatterns(filename,  1)
         longDown = FindLongestPatterns(filename, -1)
         maxlong = []
