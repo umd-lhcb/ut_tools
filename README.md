@@ -13,3 +13,14 @@ Parse through elink tables exported on MiniDAQ. Prototyped by Jorge Ramirez
 ## `CsvGen.py`
 Generate csv instruction sets to program COMET. For more technical details,
 refer to the script source code. Prototyped by Raymond Su.
+
+
+## Exported elink memory
+The following table lists the DCB+Pathfinder combination on which the data was
+taken:
+
+| date       | combo         |
+|------------|---------------|
+| `20190329` | `BP03+DCB013` |
+| `20190401` | `BP03+DCB008` |
+| `20190403` | `BP02+DCB008` |
