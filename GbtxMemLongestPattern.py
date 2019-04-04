@@ -2,18 +2,16 @@
 '''
 @author: Manuel Franco Sevilla
 @license: BSD 2-clause
+@description: Finds the longest ascending/descending continuous patterns
 '''
 
 from GbtxMemParser import GbtxMemParser
 import sys
 
 
-#####################################################################################
-# GbtMemLongestPatterns: Finds the longest ascending/descending continuous patterns #
-#####################################################################################
-
-# Returns e-link name given a global index. It allows us to modularly change e-link order
-# Currently it uses the order directly in files, starting in e-group 5 since there is no data in 6
+# Returns e-link name given a global index. It allows us to modularly change e-
+# link order Currently it uses the order directly in files, starting in e-group
+# 5 since there is no data in 6
 def ElinkNames():
     Enames = []
     for egroup in range(5, -1, -1):
