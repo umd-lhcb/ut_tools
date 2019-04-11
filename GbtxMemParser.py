@@ -56,7 +56,7 @@ class GbtxMemParser(object):
         for raw_packet in raw_data:
             parsed_packet = {}
             for elink, idx in elink_idx_map.items():
-                idx = len(raw_packet) - idx - 1
+                idx = len(raw_packet) - idx
                 parsed_packet[elink] = int(raw_packet[idx-2:idx], 16)
             parsed_data.append(parsed_packet)
 
