@@ -67,7 +67,8 @@ class GbtxMemParser(object):
         '''Define the mapping between elink channel name to its byte index in
         the GBTx frame.
 
-        Counting from right: idx 0 -> rightmost.
+        Counting from right: idx 0 -> rightmost. Each index indicates the right
+        boundary of the elink. Also assume the width of each elink is 2.
         '''
         return {
             'elink0': 2,
