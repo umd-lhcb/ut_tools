@@ -19,8 +19,9 @@ refer to the script source code. Prototyped by Raymond Su.
 The following table lists the DCB+Pathfinder combination on which the data was
 taken:
 
-| date       | combo         |
-|------------|---------------|
-| `20190329` | `BP03+DCB013` |
-| `20190401` | `BP03+DCB008` |
-| `20190403` | `BP02+DCB008` |
+| date       | combo         | COMET firmware |
+|------------|---------------|----------------|
+| `20190329` | `BP03+DCB013` | `original`     |
+| `20190401` | `BP03+DCB008` | `original`     |
+| `20190403` | `BP02+DCB008` | `original`     |
+| `20190412` | `BP02+DCB008` | `f45b0e`       |
