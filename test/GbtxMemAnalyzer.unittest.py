@@ -5,9 +5,9 @@ import unittest
 import sys
 sys.path.insert(0, '..')
 
-from GbtxMemAnalyzer import ref_fixed_pattern, ref_cyclic_pattern
-from GbtxMemAnalyzer import check_match
-from GbtxMemAnalyzer import check_shift_single_byte, check_shift
+from CometTools.GbtxMemAnalyzer import ref_fixed_pattern, ref_cyclic_pattern
+from CometTools.GbtxMemAnalyzer import check_match
+from CometTools.GbtxMemAnalyzer import check_shift_single_byte, check_shift
 
 
 class GbtxRefPatternTester(unittest.TestCase):
