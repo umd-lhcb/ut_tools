@@ -5,93 +5,41 @@ import unittest
 import sys
 sys.path.insert(0, '..')
 
-from CometTools.GbtxMemAnalyzer import ref_fixed_pattern, ref_cyclic_pattern
+from CometTools.GbtxMemAnalyzer import ref_cyclic_pattern
 from CometTools.GbtxMemAnalyzer import check_match
-from CometTools.GbtxMemAnalyzer import check_shift_single_byte, check_shift
+from CometTools.GbtxMemAnalyzer import check_shift_single_byte
 
 
 class GbtxRefPatternTester(unittest.TestCase):
-    def test_ref_fixed_pattern(self):
-        self.assertEqual(
-            ref_fixed_pattern([0x01, 0x04], ['elink0-0', 'elink0-1'], 3),
-            [
-                {'elink0-0': 0x01,
-                 'elink0-1': 0x04},
-
-                {'elink0-0': 0x01,
-                 'elink0-1': 0x04},
-
-                {'elink0-0': 0x01,
-                 'elink0-1': 0x04}
-            ]
-        )
-
     def test_ref_cyclic_pattern(self):
         self.assertEqual(
-            ref_cyclic_pattern([0x01, 0x02, 0x04],
-                               ['elink0-0', 'elink2-0', 'elink4-0'],
-                               [2, 3, 7],
-                               length=10),
-            [
-                {'elink0-0': 0x01,
-                 'elink2-0': 0x02,
-                 'elink4-0': 0x04},
-
-                {'elink0-0': 0x02,
-                 'elink2-0': 0x03,
-                 'elink4-0': 0x05},
-
-                {'elink0-0': 0x01,
-                 'elink2-0': 0x04,
-                 'elink4-0': 0x06},
-
-                {'elink0-0': 0x02,
-                 'elink2-0': 0x02,
-                 'elink4-0': 0x07},
-
-                {'elink0-0': 0x01,
-                 'elink2-0': 0x03,
-                 'elink4-0': 0x08},
-
-                {'elink0-0': 0x02,
-                 'elink2-0': 0x04,
-                 'elink4-0': 0x09},
-
-                {'elink0-0': 0x01,
-                 'elink2-0': 0x02,
-                 'elink4-0': 0x0A},
-
-                {'elink0-0': 0x02,
-                 'elink2-0': 0x03,
-                 'elink4-0': 0x04},
-
-                {'elink0-0': 0x01,
-                 'elink2-0': 0x04,
-                 'elink4-0': 0x05},
-
-                {'elink0-0': 0x02,
-                 'elink2-0': 0x02,
-                 'elink4-0': 0x06},
-            ]
+            ref_cyclic_pattern(['elink0', 'elink2', 'elink4'], [1, 3, 100]),
+            {
+                'elink0': [i for i in range(0, 256)],
+                'elink2': [i for i in range(0, 256, 3)],
+                'elink4': [0, 100, 200]
+            }
         )
 
 
 class GbtxCheckMatchTester(unittest.TestCase):
     def test_check_match(self):
-        ref_data = ref_fixed_pattern(
-            [0x01, 0x04], ['elink0-0', 'elink4-0'], 3)
+        ref_value = {
+            'elink0': 0xF0,
+            'elink4': 0xB4
+        }
         parsed_data = [
-            {'elink0-0': 0x01,
-             'elink4-0': 0x04},
+            {'elink0': 0xF0,
+             'elink4': 0xB4},
 
-            {'elink0-0': 0x01,
-             'elink4-0': 0x05},
+            {'elink0': 0xF0,
+             'elink4': 0xB5},
 
-            {'elink0-0': 0x01,
-             'elink4-0': 0x04}
+            {'elink0': 0xF0,
+             'elink4': 0xB4}
         ]
         self.assertEqual(
-            check_match(ref_data, parsed_data),
+            check_match(ref_value, parsed_data),
             {'elink0-0': {'num_match': 3, 'num_of_mismatch': 0,
                           'percent_match': 1., 'percent_mismatch': 0.},
              'elink4-0': {'num_match': 2, 'num_of_mismatch': 1,
@@ -122,58 +70,6 @@ class GbtxCheckShiftTester(unittest.TestCase):
         self.assertEqual(
             check_shift_single_byte(0b00010001, 0b10001001),
             8
-        )
-
-    def test_check_shift(self):
-        ref_data = ref_cyclic_pattern(
-            [0x01, 0x02, 0x04], ['elink0-0', 'elink2-0', 'elink4-0'],
-            [2, 3, 7], length=10)
-        parsed_data = [
-            {'elink0-0': 0x01,
-             'elink2-0': 0x02,
-             'elink4-0': 0x04},
-
-            {'elink0-0': 0x02,
-             'elink2-0': 0x03,
-             'elink4-0': 0x05},
-
-            {'elink0-0': 0x01,
-             'elink2-0': 0x04,
-             'elink4-0': 0x06},
-
-            {'elink0-0': 0x02,
-             'elink2-0': 0x02,
-             'elink4-0': 0x07},
-
-            {'elink0-0': 0x01,
-             'elink2-0': 0x03,
-             'elink4-0': 0x08},
-
-            {'elink0-0': 0x02,
-             'elink2-0': 0x04,
-             'elink4-0': 0x09},
-
-            {'elink0-0': 0x08,
-             'elink2-0': 0x02,
-             'elink4-0': 0x0A},
-
-            {'elink0-0': 0x02,
-             'elink2-0': 0x03,
-             'elink4-0': 0x04},
-
-            {'elink0-0': 0x01,
-             'elink2-0': 0x04,
-             'elink4-0': 0x05},
-
-            {'elink0-0': 0x04,
-             'elink2-0': 0x02,
-             'elink4-0': 0x0C},
-        ]
-        self.assertEqual(
-            check_shift(ref_data, parsed_data),
-            {'elink0-0': [0, 0, 0, 0, 0, 0, 3, 0, 0, 1],
-             'elink2-0': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-             'elink4-0': [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]}
         )
 
 
