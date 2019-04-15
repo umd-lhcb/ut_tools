@@ -5,6 +5,7 @@
 '''
 
 import csv
+import sys
 
 
 class GbtxMemParser(object):
@@ -85,17 +86,16 @@ class GbtxMemParser(object):
             'elink11': 20
         }
 
-    @staticmethod
-    def output_to_csv(parsed_data, filename="gen/parsed_elinks.csv"):
+    def output_to_csv(self, filename="gen/parsed_elinks.csv"):
         '''Write parsed memory data to a CSV file.
 
         Parameters:
-            parsed_data (list): Same form as defined in 'parse' method.
-            filename (Path or str): Output CSV filename, full path or relative
-                path.
+            self (object): Default class variable.
+            filename (str): Output CSV filename, full path or relative path.
 
         Returns: None
         '''
+        parsed_data = self.parse()
         csv_headers = list(parsed_data[0].keys())  # get keys for csv headers
 
         with open(filename, 'w', newline='') as csvfile:  # open csv file
@@ -105,3 +105,11 @@ class GbtxMemParser(object):
 
             for elink_dict in parsed_data:   # work on a dict by dict basis
                 writer.writerow(elink_dict)  # write each dict onto a single row
+
+
+if __name__ == '__main__':
+    input_filename = sys.argv[1]
+    output_filename = sys.argv[2]
+
+    parser = GbtxMemParser(input_filename)
+    parser.output_to_csv(output_filename)
