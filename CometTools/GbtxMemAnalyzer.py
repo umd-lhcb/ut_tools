@@ -114,10 +114,11 @@ def check_match(ref_values, parsed_data):
                                       if i == 0])
 
         num_of_match = num_of_data_points - num_of_mismatch
-        num_of_shifts = num_of_match = num_of_unshifted_match
+        num_of_shifts = num_of_match - num_of_unshifted_match
 
-        percent_match = num_of_match / num_of_data_points
-        percent_mismatch = 1 - percent_match
+        # NOTE: We use 'round' to workaround machine-precision float issue
+        percent_match = round(num_of_match / num_of_data_points, 5)
+        percent_mismatch = round(1 - percent_match, 5)
 
         result[elink] = {
             'num_of_match': num_of_match,
