@@ -40,10 +40,10 @@ class GbtxCheckMatchTester(unittest.TestCase):
         ]
         self.assertEqual(
             check_match(ref_value, parsed_data),
-            {'elink0-0': {'num_match': 3, 'num_of_mismatch': 0,
-                          'percent_match': 1., 'percent_mismatch': 0.},
-             'elink4-0': {'num_match': 2, 'num_of_mismatch': 1,
-                          'percent_match': 2/3, 'percent_mismatch': 1/3}}
+            {'elink0': {'num_match': 3, 'num_of_mismatch': 0,
+                        'percent_match': 1., 'percent_mismatch': 0.},
+             'elink4': {'num_match': 2, 'num_of_mismatch': 1,
+                        'percent_match': 2/3, 'percent_mismatch': 1/3}}
         )
 
 

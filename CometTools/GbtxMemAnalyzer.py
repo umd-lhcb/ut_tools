@@ -90,15 +90,44 @@ def check_match(ref_values, parsed_data):
         result (dict): A dict of dict that summarizes the number of match and
             mismatch, and percentage of match and mismatch for each egroup. The
             return value should have the following form:
-                {'elinkN': {'num_match': int, 'num_of_mismatch': int,
-                           'percent_match': float, 'percent_mismatch': float}
+                {'elinkN': {'num_of_match': int,
+                            'num_of_mismatch': int,
+                            'num_of_shifts': int,
+                            'percent_match': float,
+                            'percent_mismatch': float}
                  'elinkM': { ... },
                  ...
                 }
 
             Note that only the elinks present in 'ref_values' will be compared.
     '''
-    pass
+    result = {}
+
+    for elink, ref_value in ref_values.items():
+        channel_check_result = [check_shift_single_byte(ref_value, p[elink])
+                                for p in parsed_data]
+
+        num_of_data_points = len(channel_check_result)
+
+        num_of_mismatch = len([i for i in channel_check_result if i == 8])
+        num_of_unshifted_match = len([i for i in channel_check_result
+                                      if i == 0])
+
+        num_of_match = num_of_data_points - num_of_mismatch
+        num_of_shifts = num_of_match = num_of_unshifted_match
+
+        percent_match = num_of_match / num_of_data_points
+        percent_mismatch = 1 - percent_match
+
+        result[elink] = {
+            'num_of_match': num_of_match,
+            'num_of_mismatch': num_of_mismatch,
+            'num_of_shifts': num_of_shifts,
+            'percent_match': percent_match,
+            'percent_mismatch': percent_mismatch
+        }
+
+    return result
 
 
 ################################################################################
