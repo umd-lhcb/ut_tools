@@ -17,7 +17,7 @@ def cyclic_pattern(head=0b00000000, length=256, stepsize=1):
     return ['{0:08b}'.format(n) for n in range(head, head+length, stepsize)]
 
 
-def ref_cyclic_pattern(elinks, stepsizes):
+def ref_cyclic_pattern(elinks, stepsizes, heads=None):
     '''Generate a reference cyclic pattern.
 
     Parameters:
@@ -33,7 +33,11 @@ def ref_cyclic_pattern(elinks, stepsizes):
             {'elinkN': [<list of int>],
              'elinkM': [<list of int>], ... }
     '''
-    pass
+    ref_patterns = {
+        elink: [int(i, 2) for i in cyclic_pattern(stepsize=step)]
+        for elink, step in zip(elinks, stepsizes)
+    }
+    return ref_patterns
 
 
 ########################################
