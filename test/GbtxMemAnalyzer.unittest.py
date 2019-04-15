@@ -26,17 +26,21 @@ class GbtxCheckMatchTester(unittest.TestCase):
     def test_check_match(self):
         ref_value = {
             'elink0': 0xF0,
-            'elink4': 0xB4
+            'elink4': 0xB4,
+            'elink5': 0x01
         }
         parsed_data = [
             {'elink0': 0xF0,
-             'elink4': 0xB4},
+             'elink4': 0xB4,
+             'elink5': 0x01},
 
             {'elink0': 0xF0,
-             'elink4': 0xB5},
+             'elink4': 0xB5,
+             'elink5': 0x02},
 
             {'elink0': 0xF0,
-             'elink4': 0xB4}
+             'elink4': 0xB4,
+             'elink5': 0x02}
         ]
         self.assertEqual(
             check_match(ref_value, parsed_data),
@@ -49,7 +53,13 @@ class GbtxCheckMatchTester(unittest.TestCase):
                         'num_of_mismatch': 1,
                         'num_of_shifts': 0,
                         'percent_match': round(2/3, 5),
-                        'percent_mismatch': round(1/3, 5)}}
+                        'percent_mismatch': round(1/3, 5)},
+             'elink5': {'num_of_match': 3,
+                        'num_of_mismatch': 0,
+                        'num_of_shifts': 2,
+                        'percent_match': 1.,
+                        'percent_mismatch': 0.}
+             }
         )
 
 
