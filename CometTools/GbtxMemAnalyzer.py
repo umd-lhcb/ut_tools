@@ -174,7 +174,7 @@ def find_counting_direction(ref_pattern, data, length_data, **kwargs):
     length_next = 2*8 if 'next' not in kwargs.keys() else kwargs['next']*8
     length_ref_pattern = len(ref_pattern)
 
-    result = 0
+    direction = 0
 
     for idx in range(0, length_ref_pattern):
         prev_idx, next_idx = find_slicing_idx(idx, length_ref_pattern, **kwargs)
@@ -186,7 +186,7 @@ def find_counting_direction(ref_pattern, data, length_data, **kwargs):
             pass_thresh = length_data - length_prev
             shift = check_shift(expected, data, length_prev, length_data)
             if 0 <= shift <= pass_thresh:
-                result = -1
+                direction = -1
                 break
 
         if len(next_slice) == length_next / 8:
@@ -194,10 +194,10 @@ def find_counting_direction(ref_pattern, data, length_data, **kwargs):
             pass_thresh = length_data - length_next
             shift = check_shift(expected, data, length_next, length_data)
             if 0 <= shift <= pass_thresh:
-                result = 1
+                direction = 1
                 break
 
-    return result
+    return (direction, shift)
 
 
 def check_time_evolution(ref_patterns, parsed_data,
@@ -208,12 +208,18 @@ def check_time_evolution(ref_patterns, parsed_data,
     # 'down': e.g. 3, 2, 1
 
     for elink, ref_pattern in ref_patterns.items():
-        num_of_consecutive_packet = 0
-        max_counting_pattern = []
+        current_sequence = []
+        max_sequence = []
+
+        previous_badness = None
         badness = []
 
-        direction = 0
+        previous_direction = None
+        max_direction = 0
 
         for idx in range(0, len(parsed_data)-data_slice_size+1):
-            data_slice = [parsed_data[i][elink]
-                          for i in range(idx, idx+data_slice_size)]
+            data = concatenate_bytes(
+                [parsed_data[i][elink] for i in range(idx, idx+data_slice_size)]
+            )
+
+    return result

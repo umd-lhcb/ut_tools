@@ -150,11 +150,51 @@ class GbtxCheckTimeEvolutionTester(unittest.TestCase):
         )
 
     def test_find_counting_direction_up_case1(self):
-        data = 0xFFFEFD
-        ref_pattern = [0xFF, 0xFE, 0xFD]
+        data = 0xFDFEFF
+        ref_pattern = [0xFD, 0xFE, 0xFF]
         self.assertEqual(
             find_counting_direction(ref_pattern, data, 24),
-            1
+            (1, 8)
+        )
+
+    def test_find_counting_direction_up_case2(self):
+        data = 0xFFFDFE
+        ref_pattern = [0xFD, 0xFE, 0xFF]
+        self.assertEqual(
+            find_counting_direction(ref_pattern, data, 24),
+            (1, 0)
+        )
+
+    def test_find_counting_direction_up_case3(self):
+        data = 0xFEFEFF
+        ref_pattern = [0xFD, 0xFE, 0xFF]
+        self.assertEqual(
+            find_counting_direction(ref_pattern, data, 24),
+            (1, 0)
+        )
+
+    def test_find_counting_direction_down_case1(self):
+        data = 0xFFFEFD
+        ref_pattern = [0xFD, 0xFE, 0xFF]
+        self.assertEqual(
+            find_counting_direction(ref_pattern, data, 24),
+            (-1, 8)
+        )
+
+    def test_find_counting_direction_down_case2(self):
+        data = 0xFFFFFE
+        ref_pattern = [0xFD, 0xFE, 0xFF]
+        self.assertEqual(
+            find_counting_direction(ref_pattern, data, 24),
+            (-1, 0)
+        )
+
+    def test_find_counting_direction_none(self):
+        data = 0x01033C
+        ref_pattern = [0xFD, 0xFE, 0xFF]
+        self.assertEqual(
+            find_counting_direction(ref_pattern, data, 24),
+            (0, 9)
         )
 
 
