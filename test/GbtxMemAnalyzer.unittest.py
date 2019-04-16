@@ -93,19 +93,19 @@ class GbtxCheckMatchTester(unittest.TestCase):
 class GbtxCheckTimeEvolutionTester(unittest.TestCase):
     def test_find_slicing_idx_case1(self):
         self.assertEqual(
-            find_slicing_idx(0),
+            find_slicing_idx(0, prev=3, next=3),
             (0, 4)
         )
 
     def test_find_slicing_idx_case2(self):
         self.assertEqual(
-            find_slicing_idx(2),
+            find_slicing_idx(2, prev=3, next=3),
             (0, 6)
         )
 
     def test_find_slicing_idx_case3(self):
         self.assertEqual(
-            find_slicing_idx(4),
+            find_slicing_idx(4, prev=3, next=3),
             (1, 8)
         )
 
