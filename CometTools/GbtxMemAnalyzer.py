@@ -202,30 +202,6 @@ def find_counting_direction(ref_pattern, data, length_data, **kwargs):
 
 def check_time_evolution(ref_patterns, parsed_data,
                          data_slice_size=3, **kwargs):
-    '''Check if the time evolution of parsed data is following a reference
-    pattern.
-
-    Parameters:
-        ref_patterns (dict): Same form as defined in 'ref_cyclic_pattern'.
-        parsed_data (list): Same form as defined in 'check_match'.
-        match_thresh (float): Consider match only if the percentage of match is
-            greater or equal to the value set here
-        **kwargs: Additional keyword arguments that will be passed to
-            'find_slicing_idx'.
-
-    Returns:
-        result (dict): A dict of dict of the following form:
-                {'elinkN': {'counting': 'up'|'down'|'none',
-                            'num_of_consecutive_packet': int,
-                            'badness': [int],
-                            'max_counting_pattern': [int]},
-                 'elinkN': { ... },
-                 ...
-                }
-
-            Note that only the elinks present in 'ref_patterns' will be
-            compared.
-    '''
     result = {}
     counting_direction = {0: 'none', 1: 'up', -1: 'down'}
     # 'up':   e.g. 1, 2, 3
