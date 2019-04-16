@@ -2,17 +2,14 @@
 A collection of COMET tools for various LHCb UT upgrade testings.
 
 
-## `GbtxMemAnalyzer.py`
-Analyze the elink signal transmission quality by analyze parsed elink tables.
-
-
-## `GbtxMemParser.py`
-Parse through elink tables exported on MiniDAQ. Prototyped by Jorge Ramirez
-
-
 ## `CsvGen.py`
 Generate csv instruction sets to program COMET. For more technical details,
 refer to the script source code. Prototyped by Raymond Su.
+
+
+## `GbtxMemLongestPattern.py`
+Find the maximum continuous pattern for each elink based on exported elink
+memory files.
 
 
 ## Exported elink memory
@@ -25,3 +22,4 @@ taken:
 | `20190401` | `BP03+DCB008` | `v0-0`         |
 | `20190403` | `BP02+DCB008` | `v0-0`         |
 | `20190412` | `BP02+DCB008` | `v0-1`         |
+| `20190412` | `BP02+DCB008` | `v0-0`         |
