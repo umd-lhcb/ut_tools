@@ -22,6 +22,32 @@ class GbtxRefPatternTester(unittest.TestCase):
         )
 
 
+class GbtxCheckShiftTester(unittest.TestCase):
+    def test_check_shift_single_byte_none(self):
+        self.assertEqual(
+            check_shift_single_byte(0b00010001, 0b00010001),
+            0
+        )
+
+    def test_check_shift_single_byte_positive(self):
+        self.assertEqual(
+            check_shift_single_byte(0b00010001, 0b01000100),
+            2
+        )
+
+    def test_check_shift_single_byte_negative(self):
+        self.assertEqual(
+            check_shift_single_byte(0b00010001, 0b10001000),
+            3
+        )
+
+    def test_check_shift_single_byte_mismatch(self):
+        self.assertEqual(
+            check_shift_single_byte(0b00010001, 0b10001001),
+            8
+        )
+
+
 class GbtxCheckMatchTester(unittest.TestCase):
     def test_check_match(self):
         ref_value = {
@@ -60,32 +86,6 @@ class GbtxCheckMatchTester(unittest.TestCase):
                         'percent_match': 1.,
                         'percent_mismatch': 0.}
              }
-        )
-
-
-class GbtxCheckShiftTester(unittest.TestCase):
-    def test_check_shift_single_byte_none(self):
-        self.assertEqual(
-            check_shift_single_byte(0b00010001, 0b00010001),
-            0
-        )
-
-    def test_check_shift_single_byte_positive(self):
-        self.assertEqual(
-            check_shift_single_byte(0b00010001, 0b01000100),
-            2
-        )
-
-    def test_check_shift_single_byte_negative(self):
-        self.assertEqual(
-            check_shift_single_byte(0b00010001, 0b10001000),
-            3
-        )
-
-    def test_check_shift_single_byte_mismatch(self):
-        self.assertEqual(
-            check_shift_single_byte(0b00010001, 0b10001001),
-            8
         )
 
 
