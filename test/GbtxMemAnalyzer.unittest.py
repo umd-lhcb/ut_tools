@@ -8,6 +8,7 @@ sys.path.insert(0, '..')
 from CometTools.GbtxMemAnalyzer import ref_cyclic_pattern
 from CometTools.GbtxMemAnalyzer import check_match
 from CometTools.GbtxMemAnalyzer import check_shift_single_byte
+from CometTools.GbtxMemAnalyzer import find_slicing_idx
 
 
 class GbtxRefPatternTester(unittest.TestCase):
@@ -86,6 +87,26 @@ class GbtxCheckMatchTester(unittest.TestCase):
                         'percent_match': 1.,
                         'percent_mismatch': 0.}
              }
+        )
+
+
+class GbtxCheckTimeEvolutionTester(unittest.TestCase):
+    def test_find_slicing_idx_case1(self):
+        self.assertEqual(
+            find_slicing_idx(0),
+            (0, 4)
+        )
+
+    def test_find_slicing_idx_case2(self):
+        self.assertEqual(
+            find_slicing_idx(2),
+            (0, 6)
+        )
+
+    def test_find_slicing_idx_case3(self):
+        self.assertEqual(
+            find_slicing_idx(4),
+            (1, 8)
         )
 
 

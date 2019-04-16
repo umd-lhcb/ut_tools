@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 '''
-@author: Jorge Ramirez, Raymond Su, Ben Flaggs, Yipeng Sun
+@author: Jorge Ramirez, Raymond Su, Ben Flaggs, Yipeng Sun,
+         Manuel Franco Sevilla
 @license: BSD 2-clause
 '''
 
@@ -136,8 +137,27 @@ def check_match(ref_values, parsed_data):
 # to a shift                                                                   #
 ################################################################################
 
+def find_slicing_idx(current_idx, prev=3, next=3):
+    '''Find the indices of previous <prev> element and next <next> element,
+    based on current index.
+
+    Parameters:
+        current_idx (int): Current index.
+        prev (int): Jump back <prev> elements.
+        next (int): Jump forward <next> elements.
+
+    Returns:
+        (prev_idx, next_idx): A tuple of integers, containing previous and next
+            indices.
+    '''
+    prev_idx = max(0, current_idx - prev)
+    next_idx = current_idx + 1 + next
+    return (prev_idx, next_idx)
+
+
 def check_time_evolution(ref_patterns, parsed_data):
-    '''Check if parsed data is shifted compared to reference data.
+    '''Check if the time evolution of parsed data is following a reference
+    pattern.
 
     Parameters:
         ref_patterns (dict): Same form as defined in 'ref_cyclic_pattern'.
