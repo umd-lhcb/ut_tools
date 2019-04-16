@@ -45,7 +45,7 @@ def ref_cyclic_pattern(elinks, stepsizes, heads=None):
 # Check if the parsed data has shifted #
 ########################################
 
-# FIXME: Based on Manuel's bitwise operations, but has became voodoo.
+# Based on Manuel's bitwise operation checking method.
 def check_shift(expected, data, length_expected, length_data):
     length = length_data - length_expected
 
@@ -156,11 +156,20 @@ def check_match(ref_values, parsed_data):
 
 def find_slicing_idx(current_idx, prev=2, next=2):
     prev_idx = max(0, current_idx - prev)
-    next_idx = current_idx + 1 + next
+    next_idx = current_idx + next
     return (prev_idx, next_idx)
 
 
-def check_time_evolution(ref_patterns, parsed_data, match_thresh=0.9, **kwargs):
+def find_counting_direction(ref_pattern, elink, data,
+                            length_ref_per_packet=8, length_data=24, **kwargs):
+    for idx in range(0, len(ref_pattern)):
+        prev_idx, next_idx = find_slicing_idx(idx, **kwargs)
+        prev_slice = [ref_pattern[i][elink] for i in range(prev_idx, idx)]
+        next_slice = [ref_pattern[i][elink] for i in range(idx, next_idx)]
+
+
+def check_time_evolution(ref_patterns, parsed_data,
+                         data_slice_size=3, **kwargs):
     '''Check if the time evolution of parsed data is following a reference
     pattern.
 
@@ -174,10 +183,10 @@ def check_time_evolution(ref_patterns, parsed_data, match_thresh=0.9, **kwargs):
 
     Returns:
         result (dict): A dict of dict of the following form:
-                {'elinkN': {'counting': 'up'|'down',
-                            'num_of_consecutive_packet': <int>,
-                            'badness_per_packet': [<int>],
-                            'max_counting_pattern': [<int>]},
+                {'elinkN': {'counting': 'up'|'down'|'none',
+                            'num_of_consecutive_packet': int,
+                            'badness': [int],
+                            'max_counting_pattern': [int]},
                  'elinkN': { ... },
                  ...
                 }
@@ -186,17 +195,18 @@ def check_time_evolution(ref_patterns, parsed_data, match_thresh=0.9, **kwargs):
             compared.
     '''
     result = {}
+    counting_direction = {0: 'none', 1: 'up', -1: 'down'}
 
     for elink, ref_pattern in ref_patterns.items():
         num_of_consecutive_packet = 0
-        badness = []
         max_counting_pattern = []
+        badness = []
 
-        direction = 1
+        direction = 0
 
-        for current_idx in range(0, len(parsed_data), **kwargs):
-            prev_idx, next_idx = find_slicing_idx(current_idx)
-            prev_slice = [parsed_data[i][elink]
-                          for i in range(prev_idx, current_idx)]
-            next_slice = [parsed_data[i][elink]
-                          for i in range(current_idx+1, next_idx+1)]
+        for idx in range(0, len(parsed_data)-data_slice_size+1):
+            data_slice = [parsed_data[i][elink]
+                          for i in range(idx, idx+data_slice_size)]
+
+            for ref_idx in range(0, len(ref_pattern)):
+                prev_idx, next_idx = find_slicing_idx(ref_idx, **kwargs)
