@@ -107,6 +107,12 @@ class GbtxCheckTimeEvolutionTester(unittest.TestCase):
             0x3C02FDFE
         )
 
+    def test_concatenate_bytes_case3(self):
+        self.assertEqual(
+            concatenate_bytes([0x02, 0x3C], reverse=True),
+            0x023C
+        )
+
     def test_find_slicing_idx_case1(self):
         self.assertEqual(
             find_slicing_idx(0, prev=3, next=3),

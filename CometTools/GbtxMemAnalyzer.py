@@ -154,9 +154,11 @@ def check_match(ref_values, parsed_data):
 # to a shift                                                                   #
 ################################################################################
 
-def concatenate_bytes(byte_list):
-    # NOTE: In 'byte_list', the first element represent the right-most byte in
-    # the concatenated byte.
+def concatenate_bytes(byte_list, reverse=False):
+    # NOTE: By default, the first element in the 'byte_list' represent the
+    # right-most byte in the concatenated byte.
+    if reverse:
+        byte_list.reverse()
     return sum([byte_list[i] << (8*i) for i in range(0, len(byte_list))])
 
 
@@ -173,8 +175,10 @@ def find_counting_direction(ref_pattern, elink, data,
 
     for idx in range(0, len(ref_pattern)):
         prev_idx, next_idx = find_slicing_idx(idx, **kwargs)
-        prev_slice = [ref_pattern[i][elink] for i in range(idx, prev_idx, -1)]
-        next_slice = [ref_pattern[i][elink] for i in range(idx, next_idx)]
+        prev_slice = concatenate_bytes(
+            [ref_pattern[i][elink] for i in range(idx, prev_idx, -1)])
+        next_slice = concatenate_bytes(
+            [ref_pattern[i][elink] for i in range(idx, next_idx)], reverse=True)
 
 
 def check_time_evolution(ref_patterns, parsed_data,
@@ -216,6 +220,3 @@ def check_time_evolution(ref_patterns, parsed_data,
         for idx in range(0, len(parsed_data)-data_slice_size+1):
             data_slice = [parsed_data[i][elink]
                           for i in range(idx, idx+data_slice_size)]
-
-            for ref_idx in range(0, len(ref_pattern)):
-                prev_idx, next_idx = find_slicing_idx(ref_idx, **kwargs)
