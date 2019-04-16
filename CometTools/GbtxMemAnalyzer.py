@@ -45,6 +45,28 @@ def ref_cyclic_pattern(elinks, stepsizes, heads=None):
 # Check if the parsed data has shifted #
 ########################################
 
+# FIXME: Based on Manuel's bitwise operations, but has became voodoo.
+def check_shift(expected, data, length_expected, length_data):
+    length = length_data - length_expected
+
+    if length < 0:
+        raise ValueError(
+            '{} is longer than {} in binary representation'.format(
+                expected, data
+            ))
+
+    test_pattern = int('0b'+'1'*length_expected, 2)
+    checksum = test_pattern & expected
+
+    shift = length
+    for s in range(0, length):
+        if test_pattern & (data >> s) == checksum:
+            shift = s
+            break
+
+    return shift
+
+
 def check_shift_single_byte(expected_byte, parsed_byte):
     '''Check the shift of a single byte.
 
@@ -56,16 +78,8 @@ def check_shift_single_byte(expected_byte, parsed_byte):
         shift (int): Number of right shifts. Note this this is always a
         non-negative integer between 0-8, where 8 indicates error.
     '''
-    shift = 8
-
-    expected_byte_two_cycles = '{0:08b}'.format(expected_byte) * 2
-    parsed_byte = '{0:08b}'.format(parsed_byte)
-
-    for i in range(0, 8):
-        if expected_byte_two_cycles[0+i:8+i] == parsed_byte:
-            shift = i
-            break
-
+    shift = check_shift(expected_byte, (parsed_byte << 8)+parsed_byte,
+                        8, 16)
     return shift
 
 
@@ -137,24 +151,30 @@ def check_match(ref_values, parsed_data):
 # to a shift                                                                   #
 ################################################################################
 
-def find_slicing_idx(current_idx, prev=3, next=3):
+def find_slicing_idx(current_idx, prev=2, next=2):
     prev_idx = max(0, current_idx - prev)
     next_idx = current_idx + 1 + next
     return (prev_idx, next_idx)
 
 
-def check_time_evolution(ref_patterns, parsed_data):
+def check_time_evolution(ref_patterns, parsed_data, match_thresh=0.9, **kwargs):
     '''Check if the time evolution of parsed data is following a reference
     pattern.
 
     Parameters:
         ref_patterns (dict): Same form as defined in 'ref_cyclic_pattern'.
         parsed_data (list): Same form as defined in 'check_match'.
+        match_thresh (float): Consider match only if the percentage of match is
+            greater or equal to the value set here
+        **kwargs: Additional keyword arguments that will be passed to
+            'find_slicing_idx'.
 
     Returns:
         result (dict): A dict of dict of the following form:
                 {'elinkN': {'counting': 'up'|'down',
-                            'num_of_consecutive_packet', <int>},
+                            'num_of_consecutive_packet': <int>,
+                            'badness_per_packet': [<int>],
+                            'max_counting_pattern': [<int>]},
                  'elinkN': { ... },
                  ...
                 }
@@ -162,5 +182,18 @@ def check_time_evolution(ref_patterns, parsed_data):
             Note that only the elinks present in 'ref_patterns' will be
             compared.
     '''
+    result = {}
+
     for elink, ref_pattern in ref_patterns.items():
-        channel_check_result = {}
+        num_of_consecutive_packet = 0
+        badness_per_packet = []
+        max_counting_pattern = []
+
+        direction = 1
+
+        for current_idx in range(0, len(parsed_data), **kwargs):
+            prev_idx, next_idx = find_slicing_idx(current_idx)
+            prev_slice = [parsed_data[i][elink]
+                          for i in range(prev_idx, current_idx)]
+            next_slice = [parsed_data[i][elink]
+                          for i in range(current_idx+1, next_idx+1)]
