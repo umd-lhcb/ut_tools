@@ -109,24 +109,26 @@ def check_match(ref_values, parsed_data):
                             'num_of_mismatch': int,
                             'num_of_shifts': int,
                             'percent_match': float,
-                            'percent_mismatch': float}
+                            'percent_mismatch': float,
+                            'badness': [int]}
                  'elinkM': { ... },
                  ...
                 }
 
             Note that only the elinks present in 'ref_values' will be compared.
+
+            Also, the std of 'badness' is a naive characterization of jitter.
     '''
     result = {}
 
     for elink, ref_value in ref_values.items():
-        channel_check_result = [check_shift_single_byte(ref_value, p[elink])
-                                for p in parsed_data]
+        badness = [check_shift_single_byte(ref_value, p[elink])
+                   for p in parsed_data]
 
-        num_of_data_points = len(channel_check_result)
+        num_of_data_points = len(badness)
 
-        num_of_mismatch = len([i for i in channel_check_result if i == 8])
-        num_of_unshifted_match = len([i for i in channel_check_result
-                                      if i == 0])
+        num_of_mismatch = len([i for i in badness if i == 8])
+        num_of_unshifted_match = len([i for i in badness if i == 0])
 
         num_of_match = num_of_data_points - num_of_mismatch
         num_of_shifts = num_of_match - num_of_unshifted_match
@@ -140,7 +142,8 @@ def check_match(ref_values, parsed_data):
             'num_of_mismatch': num_of_mismatch,
             'num_of_shifts': num_of_shifts,
             'percent_match': percent_match,
-            'percent_mismatch': percent_mismatch
+            'percent_mismatch': percent_mismatch,
+            'badness': badness
         }
 
     return result
@@ -186,7 +189,7 @@ def check_time_evolution(ref_patterns, parsed_data, match_thresh=0.9, **kwargs):
 
     for elink, ref_pattern in ref_patterns.items():
         num_of_consecutive_packet = 0
-        badness_per_packet = []
+        badness = []
         max_counting_pattern = []
 
         direction = 1

@@ -75,17 +75,20 @@ class GbtxCheckMatchTester(unittest.TestCase):
                         'num_of_mismatch': 0,
                         'num_of_shifts': 0,
                         'percent_match': 1.,
-                        'percent_mismatch': 0.},
+                        'percent_mismatch': 0.,
+                        'badness': [0, 0, 0]},
              'elink4': {'num_of_match': 2,
                         'num_of_mismatch': 1,
                         'num_of_shifts': 0,
                         'percent_match': round(2/3, 5),
-                        'percent_mismatch': round(1/3, 5)},
+                        'percent_mismatch': round(1/3, 5),
+                        'badness': [0, 8, 0]},
              'elink5': {'num_of_match': 3,
                         'num_of_mismatch': 0,
                         'num_of_shifts': 2,
                         'percent_match': 1.,
-                        'percent_mismatch': 0.}
+                        'percent_mismatch': 0.,
+                        'badness': [0, 1, 1]}
              }
         )
 
