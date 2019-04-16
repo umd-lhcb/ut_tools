@@ -152,10 +152,10 @@ def check_time_evolution(ref_patterns, parsed_data):
         parsed_data (list): Same form as defined in 'check_match'.
 
     Returns:
-        result (dict): A dict of list of the following form:
-                {'elinkN': ['counting': 'up'|'down',
-                            'num_of_consecutive_packet', <int>],
-                 'elinkN': [ ... ],
+        result (dict): A dict of dict of the following form:
+                {'elinkN': {'counting': 'up'|'down',
+                            'num_of_consecutive_packet', <int>},
+                 'elinkN': { ... },
                  ...
                 }
 
@@ -163,4 +163,4 @@ def check_time_evolution(ref_patterns, parsed_data):
             compared.
     '''
     for elink, ref_pattern in ref_patterns.items():
-        pass
+        channel_check_result = {}
