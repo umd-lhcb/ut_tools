@@ -58,8 +58,9 @@ def check_shift(expected, data, length_expected, length_data):
     test_pattern = int('0b'+'1'*length_expected, 2)
     checksum = test_pattern & expected
 
-    shift = length
-    for s in range(0, length):
+    # To differentiate between shifting by a full byte and a real error
+    shift = length + 1
+    for s in range(0, length+1):
         if test_pattern & (data >> s) == checksum:
             shift = s
             break
@@ -127,7 +128,7 @@ def check_match(ref_values, parsed_data):
 
         num_of_data_points = len(badness)
 
-        num_of_mismatch = len([i for i in badness if i == 8])
+        num_of_mismatch = len([i for i in badness if i == 9])
         num_of_unshifted_match = len([i for i in badness if i == 0])
 
         num_of_match = num_of_data_points - num_of_mismatch
@@ -162,23 +163,41 @@ def concatenate_bytes(byte_list, reverse=True):
     return sum([byte_list[i] << (8*i) for i in range(0, len(byte_list))])
 
 
-def find_slicing_idx(current_idx, prev=2, next=2):
+def find_slicing_idx(current_idx, length, prev=2, next=2):
     prev_idx = max(0, current_idx - prev)
-    next_idx = current_idx + next
+    next_idx = min(length, current_idx + next)
     return (prev_idx, next_idx)
 
 
-def find_counting_direction(ref_pattern, elink, data,
-                            length_data=24, **kwargs):
-    length_prev = 2 if 'prev' not in kwargs.keys() else kwargs['prev']
-    length_next = 2 if 'next' not in kwargs.keys() else kwargs['next']
+def find_counting_direction(ref_pattern, data, length_data, **kwargs):
+    length_prev = 2*8 if 'prev' not in kwargs.keys() else kwargs['prev']*8
+    length_next = 2*8 if 'next' not in kwargs.keys() else kwargs['next']*8
+    length_ref_pattern = len(ref_pattern)
 
-    for idx in range(0, len(ref_pattern)):
-        prev_idx, next_idx = find_slicing_idx(idx, **kwargs)
-        prev_slice = concatenate_bytes(
-            [ref_pattern[i][elink] for i in range(idx, prev_idx, -1)])
-        next_slice = concatenate_bytes(
-            [ref_pattern[i][elink] for i in range(idx, next_idx)], reverse=True)
+    result = 0
+
+    for idx in range(0, length_ref_pattern):
+        prev_idx, next_idx = find_slicing_idx(idx, length_ref_pattern, **kwargs)
+        prev_slice = [ref_pattern[i] for i in range(idx, prev_idx, -1)]
+        next_slice = [ref_pattern[i] for i in range(idx, next_idx)]
+
+        if len(prev_slice) == length_prev / 8:
+            expected = concatenate_bytes(prev_slice)
+            pass_thresh = length_data - length_prev
+            shift = check_shift(expected, data, length_prev, length_data)
+            if 0 <= shift <= pass_thresh:
+                result = -1
+                break
+
+        if len(next_slice) == length_next / 8:
+            expected = concatenate_bytes(next_slice)
+            pass_thresh = length_data - length_next
+            shift = check_shift(expected, data, length_next, length_data)
+            if 0 <= shift <= pass_thresh:
+                result = 1
+                break
+
+    return result
 
 
 def check_time_evolution(ref_patterns, parsed_data,
@@ -209,6 +228,8 @@ def check_time_evolution(ref_patterns, parsed_data,
     '''
     result = {}
     counting_direction = {0: 'none', 1: 'up', -1: 'down'}
+    # 'up':   e.g. 1, 2, 3
+    # 'down': e.g. 3, 2, 1
 
     for elink, ref_pattern in ref_patterns.items():
         num_of_consecutive_packet = 0

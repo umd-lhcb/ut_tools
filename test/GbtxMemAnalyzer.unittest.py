@@ -7,9 +7,9 @@ sys.path.insert(0, '..')
 
 from CometTools.GbtxMemAnalyzer import ref_cyclic_pattern
 from CometTools.GbtxMemAnalyzer import check_match
-from CometTools.GbtxMemAnalyzer import check_shift_single_byte
-from CometTools.GbtxMemAnalyzer import concatenate_bytes
-from CometTools.GbtxMemAnalyzer import find_slicing_idx
+from CometTools.GbtxMemAnalyzer import check_shift, check_shift_single_byte
+from CometTools.GbtxMemAnalyzer import concatenate_bytes, find_slicing_idx
+from CometTools.GbtxMemAnalyzer import find_counting_direction
 
 
 class GbtxRefPatternTester(unittest.TestCase):
@@ -31,13 +31,13 @@ class GbtxCheckShiftTester(unittest.TestCase):
             0
         )
 
-    def test_check_shift_single_byte_positive(self):
+    def test_check_shift_single_byte_match_case1(self):
         self.assertEqual(
             check_shift_single_byte(0b00010001, 0b01000100),
             2
         )
 
-    def test_check_shift_single_byte_negative(self):
+    def test_check_shift_single_byte_match_case2(self):
         self.assertEqual(
             check_shift_single_byte(0b00010001, 0b10001000),
             3
@@ -46,7 +46,25 @@ class GbtxCheckShiftTester(unittest.TestCase):
     def test_check_shift_single_byte_mismatch(self):
         self.assertEqual(
             check_shift_single_byte(0b00010001, 0b10001001),
+            9
+        )
+
+    def test_check_shift_match_case1(self):
+        self.assertEqual(
+            check_shift(0xFFFE, 0xFFFEFD, 16, 24),
             8
+        )
+
+    def test_check_shift_match_case2(self):
+        self.assertEqual(
+            check_shift(0xFDFC, 0xFFFDFC, 16, 24),
+            0
+        )
+
+    def test_check_shift_mismatch(self):
+        self.assertEqual(
+            check_shift(0xFDFC, 0xFFFDFE, 16, 24),
+            9
         )
 
 
@@ -83,7 +101,7 @@ class GbtxCheckMatchTester(unittest.TestCase):
                         'num_of_shifts': 0,
                         'percent_match': round(2/3, 5),
                         'percent_mismatch': round(1/3, 5),
-                        'badness': [0, 8, 0]},
+                        'badness': [0, 9, 0]},
              'elink5': {'num_of_match': 3,
                         'num_of_mismatch': 0,
                         'num_of_shifts': 2,
@@ -115,20 +133,28 @@ class GbtxCheckTimeEvolutionTester(unittest.TestCase):
 
     def test_find_slicing_idx_case1(self):
         self.assertEqual(
-            find_slicing_idx(0, prev=3, next=3),
+            find_slicing_idx(0, 10, prev=3, next=3),
             (0, 3)
         )
 
     def test_find_slicing_idx_case2(self):
         self.assertEqual(
-            find_slicing_idx(2, prev=3, next=3),
-            (0, 5)
+            find_slicing_idx(2, 4, prev=3, next=3),
+            (0, 4)
         )
 
     def test_find_slicing_idx_case3(self):
         self.assertEqual(
-            find_slicing_idx(4, prev=3, next=3),
+            find_slicing_idx(4, 11, prev=3, next=3),
             (1, 7)
+        )
+
+    def test_find_counting_direction_up_case1(self):
+        data = 0xFFFEFD
+        ref_pattern = [0xFF, 0xFE, 0xFD]
+        self.assertEqual(
+            find_counting_direction(ref_pattern, data, 24),
+            1
         )
 
 
