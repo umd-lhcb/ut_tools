@@ -154,9 +154,9 @@ def check_match(ref_values, parsed_data):
 # to a shift                                                                   #
 ################################################################################
 
-def concatenate_bytes(byte_list, reverse=False):
+def concatenate_bytes(byte_list, reverse=True):
     # NOTE: By default, the first element in the 'byte_list' represent the
-    # right-most byte in the concatenated byte.
+    # left-most byte in the concatenated byte.
     if reverse:
         byte_list.reverse()
     return sum([byte_list[i] << (8*i) for i in range(0, len(byte_list))])
