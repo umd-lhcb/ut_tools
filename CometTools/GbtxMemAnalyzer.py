@@ -138,18 +138,6 @@ def check_match(ref_values, parsed_data):
 ################################################################################
 
 def find_slicing_idx(current_idx, prev=3, next=3):
-    '''Find the indices of previous <prev> element and next <next> element,
-    based on current index.
-
-    Parameters:
-        current_idx (int): Current index.
-        prev (int): Jump back <prev> elements.
-        next (int): Jump forward <next> elements.
-
-    Returns:
-        (prev_idx, next_idx): A tuple of integers, containing previous and next
-            indices.
-    '''
     prev_idx = max(0, current_idx - prev)
     next_idx = current_idx + 1 + next
     return (prev_idx, next_idx)
@@ -165,7 +153,7 @@ def check_time_evolution(ref_patterns, parsed_data):
 
     Returns:
         result (dict): A dict of list of the following form:
-                {'elinkN': ['counting': up|down,
+                {'elinkN': ['counting': 'up'|'down',
                             'num_of_consecutive_packet', <int>],
                  'elinkN': [ ... ],
                  ...
@@ -174,4 +162,5 @@ def check_time_evolution(ref_patterns, parsed_data):
             Note that only the elinks present in 'ref_patterns' will be
             compared.
     '''
-    pass
+    for elink, ref_pattern in ref_patterns.items():
+        pass
