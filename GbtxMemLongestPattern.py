@@ -161,5 +161,5 @@ if __name__ == '__main__':
 
     for row in comet_pins_to_check:
         elink_id, comet_pins = row
-        print('{:9}'.format(elink_id), end=': ')
+        print('{:>9}'.format(elink_id), end=' : ')
         print(comet_pins)
