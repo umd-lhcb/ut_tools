@@ -198,6 +198,27 @@ class CheckTimeEvolutionTester(unittest.TestCase):
             (0, 9)
         )
 
+    def test_check_time_evolution_case1(self):
+        parsed_data = [
+            {'elink0': 0x01},
+            {'elink0': 0x02},
+            {'elink0': 0x03},
+            {'elink0': 0x04},
+            {'elink0': 0x05},
+            {'elink0': 0x06},
+            {'elink0': 0x07},
+            {'elink0': 0x08},
+            {'elink0': 0x09},
+        ]
+        ref_patterns = {
+            'elink0': [i for i in range(0, 256)]
+        }
+        result = check_time_evolution(ref_patterns, parsed_data)
+        self.assertEqual(result['elink0']['counting_direction'], 'up')
+        self.assertEqual(result['elink0']['counting_length'], 7)
+        self.assertEqual(result['elink0']['max_sequence'],
+                         [0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07])
+
 
 if __name__ == '__main__':
     unittest.main()

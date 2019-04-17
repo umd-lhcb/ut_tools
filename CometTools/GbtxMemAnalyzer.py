@@ -6,6 +6,7 @@
 '''
 
 from copy import deepcopy
+from collections import defaultdict
 
 
 ###############################
@@ -207,7 +208,7 @@ def find_counting_direction(ref_pattern, data, length_data, **kwargs):
 
 def check_time_evolution(ref_patterns, parsed_data,
                          data_slice_size=3, **kwargs):
-    result = {}
+    result = defaultdict(lambda: defaultdict(int))
     counting_direction = {0: 'none', 1: 'up', -1: 'down'}
     # 'up':   e.g. 1, 2, 3
     # 'down': e.g. 3, 2, 1
@@ -236,21 +237,22 @@ def check_time_evolution(ref_patterns, parsed_data,
             badness.append(current_badness)  # For jitter measurement only
 
             if current_direction != 0:
-                # Always check if current number of bytes that follow the
-                # specified pattern exceeds the previous maximum.
-                if len(current_sequence) > len(max_sequence):
-                    max_sequence = deepcopy(current_sequence)
-                    max_direction = current_direction
-
                 if current_direction != previous_direction or \
                         current_badness != previous_badness:
                     # If the directions are different from previous one, or the
                     # badnesses are different, start anew.
+                    if len(current_sequence) > len(max_sequence):
+                        max_sequence = deepcopy(current_sequence)
+                        max_direction = current_direction
                     current_sequence = [current_byte]
+
                 else:
                     # current_direction == previous_direction and
                     # current_badness == previous_badness
                     current_sequence.append(current_byte)
+                    if len(current_sequence) > len(max_sequence):
+                        max_sequence = deepcopy(current_sequence)
+                        max_direction = current_direction
 
             previous_direction = current_direction
             previous_badness = current_badness
@@ -258,5 +260,6 @@ def check_time_evolution(ref_patterns, parsed_data,
         result[elink]['max_sequence'] = max_sequence
         result[elink]['counting_direction'] = counting_direction[max_direction]
         result[elink]['badness'] = badness
+        result[elink]['counting_length'] = len(max_sequence)
 
     return result
