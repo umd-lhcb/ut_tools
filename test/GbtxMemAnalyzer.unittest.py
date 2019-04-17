@@ -200,8 +200,6 @@ class CheckTimeEvolutionTester(unittest.TestCase):
 
     def test_check_time_evolution_case1(self):
         parsed_data = [
-            {'elink0': 0x01},
-            {'elink0': 0x02},
             {'elink0': 0x03},
             {'elink0': 0x04},
             {'elink0': 0x05},
@@ -209,15 +207,24 @@ class CheckTimeEvolutionTester(unittest.TestCase):
             {'elink0': 0x07},
             {'elink0': 0x08},
             {'elink0': 0x09},
+            {'elink0': 0x0A},
+            {'elink0': 0x0B},
+            {'elink0': 0x0C},
+            {'elink0': 0x0D},
+            {'elink0': 0x0E},
+            {'elink0': 0x0F},
+            {'elink0': 0x10},
+            {'elink0': 0x11},
         ]
         ref_patterns = {
             'elink0': [i for i in range(0, 256)]
         }
         result = check_time_evolution(ref_patterns, parsed_data)
         self.assertEqual(result['elink0']['counting_direction'], 'up')
-        self.assertEqual(result['elink0']['counting_length'], 7)
+        self.assertEqual(result['elink0']['counting_length'], 13)
         self.assertEqual(result['elink0']['max_sequence'],
-                         [0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07])
+                         [0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B,
+                          0x0C, 0x0D, 0x0E, 0x0F])
 
     def test_check_time_evolution_case2(self):
         parsed_data = [
@@ -303,6 +310,55 @@ class CheckTimeEvolutionTester(unittest.TestCase):
                          [0x1C, 0x2C, 0x3C, 0x4C, 0x5C, 0x6C, 0x7C])
         self.assertEqual(result['elink4']['badness'],
                          [4, 4, 4, 4, 4, 4, 4])
+
+    def test_check_time_evolution_case6(self):
+        parsed_data = [
+            {'elink4': 0x03},
+            {'elink4': 0x04},
+            {'elink4': 0x05},
+            {'elink4': 0x06},
+            {'elink4': 0x07},
+            {'elink4': 0x08},
+            {'elink4': 0x09},
+            {'elink4': 0x0A},
+            {'elink4': 0x0B},
+            {'elink4': 0x0C},
+            {'elink4': 0x0D},
+            {'elink4': 0x0E},
+            {'elink4': 0x0F},
+            {'elink4': 0x10},
+            {'elink4': 0x11},
+            {'elink4': 0x12},
+            {'elink4': 0x13},
+            {'elink4': 0x14},
+            {'elink4': 0x15},
+            {'elink4': 0x16},
+            {'elink4': 0x17},
+            {'elink4': 0x18},
+            {'elink4': 0x19},
+            {'elink4': 0x0A},
+            {'elink4': 0x1B},
+            {'elink4': 0x0C},
+            {'elink4': 0x0C},
+            {'elink4': 0x0E},
+            {'elink4': 0x0F},
+            {'elink4': 0x10},
+            {'elink4': 0x10},
+            {'elink4': 0x91},
+            {'elink4': 0x11},
+            {'elink4': 0x92},
+            {'elink4': 0x12},
+        ]
+        ref_patterns = {
+            'elink4': [i for i in range(0, 256)]
+        }
+        result = check_time_evolution(ref_patterns, parsed_data)
+        self.assertEqual(result['elink4']['counting_direction'], 'up')
+        self.assertEqual(result['elink4']['counting_length'], 22)
+        self.assertEqual(result['elink4']['max_sequence'],
+                         [i for i in range(3, 0x19)])
+
+
 
 
 if __name__ == '__main__':
