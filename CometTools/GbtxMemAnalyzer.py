@@ -5,6 +5,8 @@
 @license: BSD 2-clause
 '''
 
+from copy import deepcopy
+
 
 ###############################
 # Generate reference patterns #
@@ -169,6 +171,9 @@ def find_slicing_idx(current_idx, length, prev=2, next=2):
     return (prev_idx, next_idx)
 
 
+# NOTE: We may need to consider the inversed polarity reference pattern as
+#       counting down. Though with current reference pattern (0x0 - 0x255), I
+#       don't think it makes any difference.
 def find_counting_direction(ref_pattern, data, length_data, **kwargs):
     length_prev = 2*8 if 'prev' not in kwargs.keys() else kwargs['prev']*8
     length_next = 2*8 if 'next' not in kwargs.keys() else kwargs['next']*8
@@ -214,12 +219,44 @@ def check_time_evolution(ref_patterns, parsed_data,
         previous_badness = None
         badness = []
 
-        previous_direction = None
+        previous_direction = 0
         max_direction = 0
 
         for idx in range(0, len(parsed_data)-data_slice_size+1):
+            current_byte = parsed_data[idx][elink]
             data = concatenate_bytes(
                 [parsed_data[i][elink] for i in range(idx, idx+data_slice_size)]
             )
+            current_direction, current_badness = find_counting_direction(
+                ref_pattern, data, data_slice_size*8, **kwargs
+            )
+
+            if previous_badness is None:
+                previous_badness = current_badness
+            badness.append(current_badness)  # For jitter measurement only
+
+            if current_direction != 0:
+                # Always check if current number of bytes that follow the
+                # specified pattern exceeds the previous maximum.
+                if len(current_sequence) > len(max_sequence):
+                    max_sequence = deepcopy(current_sequence)
+                    max_direction = current_direction
+
+                if current_direction != previous_direction or \
+                        current_badness != previous_badness:
+                    # If the directions are different from previous one, or the
+                    # badnesses are different, start anew.
+                    current_sequence = [current_byte]
+                else:
+                    # current_direction == previous_direction and
+                    # current_badness == previous_badness
+                    current_sequence.append(current_byte)
+
+            previous_direction = current_direction
+            previous_badness = current_badness
+
+        result[elink]['max_sequence'] = max_sequence
+        result[elink]['counting_direction'] = counting_direction[max_direction]
+        result[elink]['badness'] = badness
 
     return result
