@@ -60,11 +60,11 @@ if __name__ == '__main__':
     for gbtx in range(1, 7):
         for comet in ['a', 'b']:
             for elink in elink_names():
+                final_result[gbtx][elink]['length'] = \
+                    all_test_results[comet][gbtx][elink]['counting_length']
                 if all_test_results[comet][gbtx][elink]['counting_length'] > \
                         threshold:
                     final_result[gbtx][elink]['from'] = comet
-                    final_result[gbtx][elink]['length'] = \
-                        all_test_results[comet][gbtx][elink]['counting_length']
 
                     final_result[gbtx][elink]['direction'] = \
                         all_test_results[comet][gbtx][elink]['counting_direction']
@@ -84,23 +84,35 @@ if __name__ == '__main__':
     ))
 
     # Printing header with e-link names
-    width = 12
+    width = 13
 
     length_of_gbtx = len('GBTx-1')
     print(' '*length_of_gbtx, end=' ')
 
     for elink in elink_names():
-        print('{0:>{1}}'.format(elink, width), end=' ')
+        print('{0:>{1}}'.format(elink, width), end='')
     print()
 
-    print('-'*(length_of_gbtx + width*len(elink_names())))
+    print('-'*(1 + length_of_gbtx + width*len(elink_names())))
 
     for gbtx, elinks in final_result.items():
         print('GBTx-{}'.format(gbtx), end=' ')
         for _, elink_info in elinks.items():
             comet = elink_info['from']
+            if comet == 'a':
+                formatted_comet = bg.blue + ef.bold + \
+                    '{:>4}'.format(comet.upper()) + rs.bold_dim + bg.rs
+            elif comet == 'b':
+                formatted_comet = bg.yellow + ef.bold + \
+                    '{:>4}'.format(comet.upper()) + rs.bold_dim + bg.rs
+            else:
+                formatted_comet = bg.red + ef.bold + \
+                    '{:>4}'.format(comet.upper()) + rs.bold_dim + bg.rs
+            print(formatted_comet, end=',')
+
             direction = elink_info['direction']
+            print('{:>4}'.format(direction), end=',')
+
             length = str(elink_info['length'])
-            print('{0:>{1}}'.format(','.join([comet, direction, length]),
-                                    width), end=' ')
+            print('{0:>{1}} '.format(length, width-4-4-1-1-1), end='')
         print()
