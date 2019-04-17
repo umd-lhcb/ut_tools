@@ -10,6 +10,7 @@ from CometTools.GbtxMemAnalyzer import check_match
 from CometTools.GbtxMemAnalyzer import check_shift, check_shift_single_byte
 from CometTools.GbtxMemAnalyzer import concatenate_bytes, find_slicing_idx
 from CometTools.GbtxMemAnalyzer import find_counting_direction
+from CometTools.GbtxMemAnalyzer import check_time_evolution
 
 
 class GbtxRefPatternTester(unittest.TestCase):
@@ -68,7 +69,7 @@ class GbtxCheckShiftTester(unittest.TestCase):
         )
 
 
-class GbtxCheckMatchTester(unittest.TestCase):
+class CheckMatchTester(unittest.TestCase):
     def test_check_match(self):
         ref_value = {
             'elink0': 0xF0,
@@ -112,7 +113,7 @@ class GbtxCheckMatchTester(unittest.TestCase):
         )
 
 
-class GbtxCheckTimeEvolutionTester(unittest.TestCase):
+class CheckTimeEvolutionTester(unittest.TestCase):
     def test_concatenate_bytes_case1(self):
         self.assertEqual(
             concatenate_bytes([0xFE, 0xFD]),
