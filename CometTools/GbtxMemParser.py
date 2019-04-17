@@ -35,7 +35,7 @@ class GbtxMemParser(object):
                 Note that the header is removed from the final result.
         '''
         with open(self.filename) as f:  # open txt file
-            raw_data = f.readlines()    # create list "raw_data" from file
+            raw_data = f.read().splitlines()  # Make sure no '\n' at the end
 
         return self.dissect_str_to_dict(raw_data)
 
