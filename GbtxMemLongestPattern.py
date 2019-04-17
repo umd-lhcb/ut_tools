@@ -93,14 +93,16 @@ if __name__ == '__main__':
     for gbtx in range(1, 7):
         for comet in ['a', 'b']:
             for elink in elink_names():
-                final_result[gbtx][elink]['length'] = \
+                counting_length = \
                     all_test_results[comet][gbtx][elink]['counting_length']
-                if all_test_results[comet][gbtx][elink]['counting_length'] > \
-                        threshold:
+
+                if counting_length > threshold:
                     final_result[gbtx][elink]['from'] = comet
 
                     final_result[gbtx][elink]['direction'] = \
                         all_test_results[comet][gbtx][elink]['counting_direction']
+
+                    final_result[gbtx][elink]['length'] = counting_length
 
     elink_counting_directions = [final_result[gbtx][elink]['direction']
                                  for gbtx in range(1, 7)
