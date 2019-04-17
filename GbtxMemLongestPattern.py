@@ -162,10 +162,10 @@ if __name__ == '__main__':
     print('\nAdditional info for the dead elinks:\n')
 
     print('{:>9}'.format('elink'), end='  ')
-    print('{:>12}'.format('COMET pins'))
-    print('-'*(9 + 12 + 2))
+    print('{:>15}'.format('COMET FPGA pins'))
+    print('-'*(9 + 15 + 2))
 
     for row in comet_pins_to_check:
         elink_id, comet_pins = row
         print('{:>9}'.format(elink_id), end='  ')
-        print('{:>12}'.format(comet_pins))
+        print('{:>15}'.format(comet_pins))
