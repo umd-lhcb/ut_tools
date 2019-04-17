@@ -125,13 +125,13 @@ if __name__ == '__main__':
     width = 13
 
     length_of_gbtx = len('GBTx-1')
-    print(' '*length_of_gbtx, end=' ')
+    print(' '*length_of_gbtx, end='')
 
     for elink in elink_names():
         print('{0:>{1}}'.format(elink, width), end='')
     print()
 
-    print('-'*(1 + length_of_gbtx + width*len(elink_names())))
+    print('-'*(length_of_gbtx + width*len(elink_names())))
 
     for gbtx, elinks in final_result.items():
         print('GBTx-{}'.format(gbtx), end=' ')

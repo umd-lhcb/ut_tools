@@ -16,10 +16,11 @@ memory files.
 The following table lists the DCB+Pathfinder combination on which the data was
 taken:
 
-| date       | combo         | COMET firmware |
-|------------|---------------|----------------|
-| `20190329` | `BP03+DCB013` | `v0-0`         |
-| `20190401` | `BP03+DCB008` | `v0-0`         |
-| `20190403` | `BP02+DCB008` | `v0-0`         |
-| `20190412` | `BP02+DCB008` | `v0-1`         |
-| `20190412` | `BP02+DCB008` | `v0-0`         |
+| suffix          | combo         | COMET firmware |
+|-----------------|---------------|----------------|
+| `20190329`      | `BP03+DCB013` | `v0-0`         |
+| `20190401`      | `BP03+DCB008` | `v0-0`         |
+| `20190403`      | `BP02+DCB008` | `v0-0`         |
+| `20190412`      | `BP03+DCB008` | `v0-1`         |
+| `20190412-v0-0` | `BP03+DCB008` | `v0-0`         |
+| `20190417`      | `BP03+DCB013` | `v0-1`         |
