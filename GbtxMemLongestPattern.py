@@ -159,9 +159,13 @@ if __name__ == '__main__':
             print('{0:>{1}} '.format(length, width-4-4-1-1-1), end='')
         print()
 
-    print('\nThe following pins on the COMET should be checked:\n')
+    print('\nAdditional info for the dead elinks:\n')
+
+    print('{:>9}'.format('elink'), end='  ')
+    print('{:>12}'.format('COMET pins'))
+    print('-'*(9 + 12 + 2))
 
     for row in comet_pins_to_check:
         elink_id, comet_pins = row
-        print('{:>9}'.format(elink_id), end=' : ')
-        print(comet_pins)
+        print('{:>9}'.format(elink_id), end='  ')
+        print('{:>12}'.format(comet_pins))
