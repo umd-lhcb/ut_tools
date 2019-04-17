@@ -5,136 +5,102 @@
 @description: Finds the longest ascending/descending continuous patterns
 '''
 
-from GbtxMemParser import GbtxMemParser
 import sys
+
+from sty import fg, bg, ef, rs
+
+from CometTools.GbtxMemParser import GbtxMemParser
+from CometTools.GbtxMemAnalyzer import ref_cyclic_pattern
+from CometTools.GbtxMemAnalyzer import check_time_evolution
 
 
 # Returns e-link name given a global index. It allows us to modularly change e-
 # link order Currently it uses the order directly in files, starting in e-group
 # 5 since there is no data in 6
-def ElinkNames():
-    Enames = []
-    for egroup in range(5, -1, -1):
-        for bit in range(2):
-            Enames.append('elink' + str(egroup) + '-' + str(bit))
-
-    return Enames
+def elink_names():
+    return ['elink' + str(i) for i in range(0, 12)]
 
 
-# For count = 1 (count = -1) it finds the longest ascending (descending) continuous patterns
-# for each e-link in filename
-def FindLongestPatterns(filename, count):
-    pars = GbtxMemParser(filename)
-    file = pars.parse()
-
-    Nelinks = 12
-    ENames = ElinkNames()
-
-    lastshift = -1  # Last shift needed to have a continuous pattern
-
-    lastrow2  = [-1]*Nelinks  # Bytes from the row before last
-    lastrow   = [-1]*Nelinks  # Bytes from the last row
-    lastshift = [-1]*Nelinks  # Last shift needed for a continuous pattern
-    nordered  =  [0]*Nelinks  # Current length of continuous pattern
-    longest   =  [0]*Nelinks  # Longest continuous pattern for each e-link
-
-    for row in range(len(file)):
-        for elink in range(Nelinks):
-            dic = file[row]
-            ename = ENames[elink]
-            val = dic[ename]
-
-            if(lastrow2[elink] >= 0):
-                # Putting together the last 3 rows
-                rows3 = (lastrow2[elink] << 16) + (lastrow[elink] << 8) + val
-                # Searching continuous patters for any shift between 0 and 7
-                for shift in range(8):
-                    last    = 0xFF & (rows3 >> (16-shift))
-                    current = 0xFF & (rows3 >> (8-shift))
-                    nextcount = last + count
-                    if(nextcount == 0x100):
-                        nextcount = 0
-                    if(nextcount == -1):
-                        nextcount = 0xFF
-                    if(current == nextcount):
-                        # If the pattern is continuous with the same shift as last continuous pattern,
-                        # increase length of continuous pattern
-                        if(shift == lastshift[elink]):
-                            nordered[elink] += 1
-                        else:
-                            nordered[elink] = 1
-                            lastshift[elink] = shift
-                        break
-                    # If it does all shifts and does not find a continuous pattern, reset nordered/lastshift
-                    if(shift == 7):
-                        nordered[elink] = 0
-                        lastshift[elink] = -1
-                if(nordered[elink] > longest[elink]):
-                    longest[elink] = nordered[elink]
-
-            # Filling the last rows for the next iteration
-            lastrow2[elink] = lastrow[elink]
-            lastrow[elink]  = val
-
-    for ind in range(len(longest)):
-        longest[ind] *= count
-    return longest
+def generate_path_to_all_mem_files(
+        path_suffix,
+        path_format='input/comet_{0}-{1}/comet_{0}-gbtx{2}.txt',
+        comet_types=['a', 'b'],
+        gbtx_idx=[i for i in range(1, 7)]):
+    return {c: {gbtx: path_format.format(c, path_suffix, gbtx)
+                for gbtx in gbtx_idx}
+            for c in comet_types}
 
 
-######################################################################################################
-# MAIN: Loops over the 12 input files and finds the longest ascending/descending continuous patterns #
-######################################################################################################
+def parse_mem_file(path):
+    parser = GbtxMemParser(path)
+    return parser.parse()
 
-cometa = []
-cometb = []
 
-# Number of e-links countin up, down, or not counting
-Nup = 0
-Ndown = 0
-Ndead = 0
-threshold = 10
+if __name__ == '__main__':
+    comet_prefix = sys.argv[1]
 
-comets = ['a', 'b']
-longestAll = []
+    elinks = elink_names()
+    comet_mem_files = generate_path_to_all_mem_files(comet_prefix)
 
-for gbtx in range(1, 7):
-    dataTakenDate = sys.argv[1]
-    longestAll.append([])
-    for comet in comets:
-        filename = 'input/comet_' + comet + '-{}/comet_'.format(dataTakenDate) + comet + '-gbtx' + str(gbtx) + '.txt'
-        longUp   = FindLongestPatterns(filename,  1)
-        longDown = FindLongestPatterns(filename, -1)
-        maxlong = []
-        for ind in range(len(longUp)):
-            if(abs(longUp[ind]) > abs(longDown[ind])):
-                maxlong.append(longUp[ind])
-            else:
-                maxlong.append(longDown[ind])
-        longestAll[gbtx-1].append(maxlong)
-        Nup   += sum(x >=  threshold for x in maxlong)
-        Ndown += sum(x <= -threshold for x in maxlong)
+    all_parsed_data = {comet: {gbtx: parse_mem_file(f)
+                               for gbtx, f in inner.items()}
+                       for comet, inner in comet_mem_files.items()}
 
-    # Finding number of dead links by finding the longest pattern between COMETs a and b
-    cometa = list(map(abs, longestAll[gbtx-1][0]))
-    cometb = list(map(abs, longestAll[gbtx-1][1]))
-    longest = [max(l1, l2) for l1, l2 in zip(cometa, cometb)]
-    Ndead += sum(x > -threshold and x < threshold for x in longest)
+    ref_patterns = ref_cyclic_pattern(elinks, [1]*12)
+    all_test_results = {comet: {gbtx: check_time_evolution(ref_patterns, data)
+                                for gbtx, data in inner.items()}
+                        for comet, inner in all_parsed_data.items()}
 
-print('\nFound ' + str(Nup) + ' e-links counting up, ' + str(Ndown) + ' counting down, and ' + str(Ndead) + ' dead\n')
+    threshold = 5  # Consider an elink alive if it has at least 5 counting bytes
+    final_result = {gbtx: {elink: {'from': 'none', 'direction': 'none',
+                                   'length': 0}
+                           for elink in elink_names()}
+                    for gbtx in range(1, 7)}
 
-# Printing header with e-link names
-width = 10
-ENames = ElinkNames()
-print(' '*15, end=' ')
-for elink in range(len(longestAll[0][0])):
-    print(f'{ENames[elink]:>10}', end=' ')
-print()
+    for gbtx in range(1, 7):
+        for comet in ['a', 'b']:
+            for elink in elink_names():
+                if all_test_results[comet][gbtx][elink]['counting_length'] > \
+                        threshold:
+                    final_result[gbtx][elink]['from'] = comet
+                    final_result[gbtx][elink]['length'] = \
+                        all_test_results[comet][gbtx][elink]['counting_length']
 
-# Printing longest patterns
-for gbtx in range(len(longestAll)):
-    for comet in range(len(longestAll[gbtx])):
-        print('GBTx-'+str(gbtx+1)+', COMET-'+comets[comet], end=" ")
-        for elink in range(len(longestAll[gbtx][comet])):
-            print(f'{longestAll[gbtx][comet][elink]:>10}', end=" ")
-        print()
+                    final_result[gbtx][elink]['direction'] = \
+                        all_test_results[comet][gbtx][elink]['counting_direction']
+
+    elink_counting_directions = [final_result[gbtx][elink]['direction']
+                                 for gbtx in range(1, 7)
+                                 for elink in elink_names()]
+    total_num = 72
+    num_counting_up = \
+        len(list(filter(lambda x: x == 'up', elink_counting_directions)))
+    num_counting_down = \
+        len(list(filter(lambda x: x == 'down', elink_counting_directions)))
+    num_dead = total_num - num_counting_up - num_counting_down
+
+    print('\nFound {0} e-links counting up, {1} counting down, and {2} dead\n'.format(
+        num_counting_up, num_counting_down, num_dead
+    ))
+
+    # Printing header with e-link names
+    width = 12
+
+    length_of_gbtx = len('GBTx-1')
+    print(' '*length_of_gbtx, end=' ')
+
+    for elink in elink_names():
+        print('{0:>{1}}'.format(elink, width), end=' ')
     print()
+
+    print('-'*(length_of_gbtx + width*len(elink_names())))
+
+    for gbtx, elinks in final_result.items():
+        print('GBTx-{}'.format(gbtx), end=' ')
+        for _, elink_info in elinks.items():
+            comet = elink_info['from']
+            direction = elink_info['direction']
+            length = str(elink_info['length'])
+            print('{0:>{1}}'.format(','.join([comet, direction, length]),
+                                    width), end=' ')
+        print()
