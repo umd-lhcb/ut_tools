@@ -172,7 +172,7 @@ def find_slicing_idx(current_idx, length, prev=2, next=2):
     return (prev_idx, next_idx)
 
 
-# NOTE: We may need to consider the inversed polarity reference pattern as
+# NOTE: We may need to consider the inverted polarity reference pattern as
 #       counting down. Though with current reference pattern (0x0 - 0x255), I
 #       don't think it makes any difference.
 def find_counting_direction(ref_pattern, data, length_data, **kwargs):
