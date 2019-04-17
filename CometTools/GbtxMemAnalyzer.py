@@ -250,9 +250,10 @@ def check_time_evolution(ref_patterns, parsed_data,
                     # current_direction == previous_direction and
                     # current_badness == previous_badness
                     current_sequence.append(current_byte)
-                    if len(current_sequence) > len(max_sequence):
-                        max_sequence = deepcopy(current_sequence)
-                        max_direction = current_direction
+
+            if len(current_sequence) > len(max_sequence):
+                max_sequence = deepcopy(current_sequence)
+                max_direction = current_direction
 
             previous_direction = current_direction
             previous_badness = current_badness
