@@ -21,7 +21,7 @@ def cyclic_pattern(head=0b00000000, length=256, stepsize=1):
     return ['{0:08b}'.format(n) for n in range(head, head+length, stepsize)]
 
 
-def ref_cyclic_pattern(elinks, stepsizes, heads=None):
+def ref_cyclic_pattern(elinks, stepsizes):
     '''Generate a reference cyclic pattern.
 
     Parameters:
