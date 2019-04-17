@@ -72,18 +72,18 @@ class GbtxMemParser(object):
         boundary of the elink. Also assume the width of each elink is 2.
         '''
         return {
-            'elink0': 2,
-            'elink1': 0,
-            'elink2': 6,
-            'elink3': 4,
-            'elink4': 10,
-            'elink5': 8,
-            'elink6': 14,
-            'elink7': 12,
-            'elink8': 18,
-            'elink9': 16,
-            'elink10': 22,
-            'elink11': 20
+            'elink0': 0,
+            'elink1': 2,
+            'elink2': 4,
+            'elink3': 6,
+            'elink4': 8,
+            'elink5': 10,
+            'elink6': 12,
+            'elink7': 14,
+            'elink8': 16,
+            'elink9': 18,
+            'elink10': 20,
+            'elink11': 22
         }
 
     def output_to_csv(self, filename="gen/parsed_elinks.csv"):
