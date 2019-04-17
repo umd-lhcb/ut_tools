@@ -6,8 +6,11 @@
 '''
 
 import sys
+import csv
+import re
 
-from sty import fg, bg, ef, rs
+from collections import defaultdict
+from sty import fg, ef, rs
 
 from CometTools.GbtxMemParser import GbtxMemParser
 from CometTools.GbtxMemAnalyzer import ref_cyclic_pattern
@@ -34,6 +37,36 @@ def generate_path_to_all_mem_files(
 def parse_mem_file(path):
     parser = GbtxMemParser(path)
     return parser.parse()
+
+
+def regularize_comet_dcb_mapping(path='input/CometDcbShortMapping.csv'):
+    regularized = defaultdict(list)
+    with open(path, mode='r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+
+        for row in csv_reader:
+            elink_id = row['Signal ID']
+            elink_id = re.sub(r'_1_[N,P]', '', elink_id)
+            elink_id = re.sub(r'GBTX_ELK_', '', elink_id)
+            elink_id = re.sub(r'_ELKS', '', elink_id)
+
+            gbtx, elink = elink_id.split('.')
+            gbtx = str(int(gbtx[2:]) + 1)
+            elink = 'elink' + elink[2:]
+
+            key = gbtx + '-' + elink
+
+            comet_pin = row['COMET FPGA pin']
+            comet_pin = re.sub(r'COMET_', '', comet_pin)
+            comet_pin = re.sub(r'-IC3', '', comet_pin)
+
+            if regularized[key] == []:
+                regularized[key].append(comet_pin)
+            else:
+                connector, pin = comet_pin.split('-')
+                regularized[key].append(pin)
+
+    return regularized
 
 
 if __name__ == '__main__':
@@ -79,6 +112,9 @@ if __name__ == '__main__':
         len(list(filter(lambda x: x == 'down', elink_counting_directions)))
     num_dead = total_num - num_counting_up - num_counting_down
 
+    comet_dcb_map = regularize_comet_dcb_mapping()
+    comet_pins_to_check = []
+
     print('\nFound {0} e-links counting up, {1} counting down, and {2} dead\n'.format(
         num_counting_up, num_counting_down, num_dead
     ))
@@ -97,17 +133,21 @@ if __name__ == '__main__':
 
     for gbtx, elinks in final_result.items():
         print('GBTx-{}'.format(gbtx), end=' ')
-        for _, elink_info in elinks.items():
+        for elink_name, elink_info in elinks.items():
+            elink_id = str(gbtx) + '-' + elink_name
+            comet_pins = ','.join(comet_dcb_map[elink_id])
+
             comet = elink_info['from']
             if comet == 'a':
-                formatted_comet = bg.blue + ef.bold + \
-                    '{:>4}'.format(comet.upper()) + rs.bold_dim + bg.rs
+                formatted_comet = fg.blue + ef.bold + \
+                    '{:>4}'.format(comet.upper()) + rs.bold_dim + fg.rs
             elif comet == 'b':
-                formatted_comet = bg.yellow + ef.bold + \
-                    '{:>4}'.format(comet.upper()) + rs.bold_dim + bg.rs
+                formatted_comet = fg.yellow + ef.bold + \
+                    '{:>4}'.format(comet.upper()) + rs.bold_dim + fg.rs
             else:
-                formatted_comet = bg.red + ef.bold + \
-                    '{:>4}'.format(comet.upper()) + rs.bold_dim + bg.rs
+                formatted_comet = fg.red + ef.bold + \
+                    '{:>4}'.format(comet.upper()) + rs.bold_dim + fg.rs
+                comet_pins_to_check.append((elink_id, comet_pins))
             print(formatted_comet, end=',')
 
             direction = elink_info['direction']
@@ -116,3 +156,10 @@ if __name__ == '__main__':
             length = str(elink_info['length'])
             print('{0:>{1}} '.format(length, width-4-4-1-1-1), end='')
         print()
+
+    print('\nThe following pins on the COMET should be checked:\n')
+
+    for row in comet_pins_to_check:
+        elink_id, comet_pins = row
+        print('{:9}'.format(elink_id), end=': ')
+        print(comet_pins)
