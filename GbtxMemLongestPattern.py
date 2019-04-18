@@ -78,6 +78,7 @@ if __name__ == '__main__':
     slice_size = 2
     data_slice_size = slice_size + 1
     threshold = 5  # Consider an elink alive if it has at least 5 counting bytes
+    total_num = 72  # Total number of elinks
 
     comet_prefix = sys.argv[1]
     preferred_elink_names = elink_names()
@@ -125,7 +126,6 @@ if __name__ == '__main__':
     elink_counting_directions = [final_result[gbtx][elink]['direction']
                                  for gbtx in range(1, 7)
                                  for elink in preferred_elink_names]
-    total_num = 72
     num_counting_up = \
         len(list(filter(lambda x: x == 'up', elink_counting_directions)))
     num_counting_down = \
