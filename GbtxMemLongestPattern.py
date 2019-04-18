@@ -12,10 +12,10 @@ import re
 from collections import defaultdict
 from sty import fg, ef, rs
 
-from CometTools.GbtxMemParser import GbtxMemParser
-from CometTools.GbtxMemAnalyzer import ref_cyclic_pattern
-from CometTools.GbtxMemAnalyzer import slice_ref_patterns
-from CometTools.GbtxMemAnalyzer import check_time_evolution
+from comet_tools.GbtxMemParser import GbtxMemParser
+from comet_tools.GbtxMemAnalyzer import ref_cyclic_pattern
+from comet_tools.GbtxMemAnalyzer import slice_ref_patterns
+from comet_tools.GbtxMemAnalyzer import check_time_evolution
 
 
 # Returns e-link name given a global index. It allows us to modularly change e-

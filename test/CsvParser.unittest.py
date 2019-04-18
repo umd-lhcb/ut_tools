@@ -5,8 +5,8 @@ import unittest
 import sys
 sys.path.insert(0, '..')
 
-from CometTools.CsvParser import regulator_signal_id
-from CometTools.CsvParser import CsvParser
+from comet_tools.CsvParser import regulator_signal_id_for_comet_dcb_mapping
+from comet_tools.CsvParser import CsvParser
 
 
 class CsvParserTester(unittest.TestCase):
@@ -20,7 +20,7 @@ class CsvParserTester(unittest.TestCase):
     def test_regularize_row(self):
         reg_exps = {'Signal ID':
                     [(r'_1_[N,P]', ''), (r'GBTX_ELK_', ''), (r'_ELKS', '')]}
-        regulators = {'Signal ID': regulator_signal_id}
+        regulators = {'Signal ID': regulator_signal_id_for_comet_dcb_mapping}
         self.assertEqual(
             CsvParser.regularize_row(
                 {'Signal ID': 'DC0_ELKS.GBTX_ELK_CH0_1_N'},

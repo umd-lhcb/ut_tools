@@ -12,7 +12,7 @@ import re
 # Regulators for entries in the parsed dict #
 #############################################
 
-def regulator_signal_id(signal_id):
+def regulator_signal_id_for_comet_dcb_mapping(signal_id):
     gbtx, elink = signal_id.split('.')
     gbtx = str(int(gbtx[2:]) + 1)
     elink = 'elink' + elink[2:]
@@ -31,7 +31,7 @@ class CsvParser(object):
                      'COMET FPGA pin':
                      [(r'_1_[N,P]', ''), (r'COMET_', ''), (r'-IC3', '')]},
                  regulators={
-                     'Signal ID': regulator_signal_id,
+                     'Signal ID': regulator_signal_id_for_comet_dcb_mapping,
                      'COMET FPGA pin': lambda x: x
                  }
                  ):

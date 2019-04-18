@@ -5,7 +5,7 @@ import unittest
 import sys
 sys.path.insert(0, '..')
 
-from CometTools.GbtxMemParser import GbtxMemParser
+from comet_tools.GbtxMemParser import GbtxMemParser
 
 
 class GbtxMemParserTester(unittest.TestCase):
