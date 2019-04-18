@@ -71,27 +71,42 @@ def regularize_comet_dcb_mapping(path='input/CometDcbShortMapping.csv'):
 
 
 if __name__ == '__main__':
+    #################
+    # Configuration #
+    #################
+
+    slice_size = 2
+    data_slice_size = slice_size + 1
+    threshold = 5  # Consider an elink alive if it has at least 5 counting bytes
+
     comet_prefix = sys.argv[1]
-
     elinks = elink_names()
-    comet_mem_files = generate_path_to_all_mem_files(comet_prefix)
 
+    ##############
+    # Validation #
+    ##############
+
+    comet_mem_files = generate_path_to_all_mem_files(comet_prefix)
     all_parsed_data = {comet: {gbtx: parse_mem_file(f)
                                for gbtx, f in inner.items()}
                        for comet, inner in comet_mem_files.items()}
 
     ref_patterns = ref_cyclic_pattern(elinks, [1]*12)
-    sliced_patterns = slice_ref_patterns(ref_patterns)
-    all_test_results = {comet: {gbtx: check_time_evolution(sliced_patterns,
-                                                           data)
-                                for gbtx, data in inner.items()}
-                        for comet, inner in all_parsed_data.items()}
+    sliced_patterns = slice_ref_patterns(ref_patterns, slice_size=slice_size)
+    all_test_results = {comet: {
+        gbtx: check_time_evolution(sliced_patterns, data,
+                                   data_slice_size=data_slice_size,
+                                   slice_size=slice_size)
+        for gbtx, data in inner.items()}
+        for comet, inner in all_parsed_data.items()}
 
-    threshold = 5  # Consider an elink alive if it has at least 5 counting bytes
-    final_result = {gbtx: {elink: {'from': 'none', 'direction': 'none',
-                                   'length': 0}
-                           for elink in elink_names()}
-                    for gbtx in range(1, 7)}
+    final_result = {gbtx: {elink: {
+        'from': 'none', 'direction': 'none', 'length': 0}
+        for elink in elink_names()} for gbtx in range(1, 7)}
+
+    ##########
+    # Output #
+    ##########
 
     for gbtx in range(1, 7):
         for comet in ['a', 'b']:
