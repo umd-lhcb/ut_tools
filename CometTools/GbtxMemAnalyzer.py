@@ -202,13 +202,13 @@ def slice_ref_patterns(ref_patterns, **kwargs):
 # NOTE: We may need to consider the inverted polarity reference pattern as
 #       counting down. Though with current reference pattern (0x0 - 0x255), I
 #       don't think it makes any difference.
-def find_counting_direction(sliced_ref_pattern, data, length_data, **kwargs):
+def find_counting_direction(sliced_pattern, data, length_data, **kwargs):
     length_prev = 2*8 if 'prev' not in kwargs.keys() else kwargs['prev']*8
     length_next = 2*8 if 'next' not in kwargs.keys() else kwargs['next']*8
 
     direction = 0
 
-    for sliced in sliced_ref_pattern:
+    for sliced in sliced_pattern:
         prev_slice, prev_slice_len, next_slice, next_slice_len = sliced
 
         if next_slice_len == length_next / 8:
@@ -232,14 +232,14 @@ def find_counting_direction(sliced_ref_pattern, data, length_data, **kwargs):
     return (direction, shift)
 
 
-def check_time_evolution(ref_patterns, parsed_data,
+def check_time_evolution(sliced_patterns, parsed_data,
                          data_slice_size=3, **kwargs):
     result = defaultdict(lambda: defaultdict(int))
     counting_direction = {0: 'none', 1: 'up', -1: 'down'}
     # 'up':   e.g. 1, 2, 3
     # 'down': e.g. 3, 2, 1
 
-    for elink, ref_pattern in ref_patterns.items():
+    for elink, sliced_pattern in sliced_patterns.items():
         current_sequence = []
         max_sequence = []
 
@@ -255,7 +255,7 @@ def check_time_evolution(ref_patterns, parsed_data,
                 [parsed_data[i][elink] for i in range(idx, idx+data_slice_size)]
             )
             current_direction, current_badness = find_counting_direction(
-                ref_pattern, data, data_slice_size*8, **kwargs
+                sliced_pattern, data, data_slice_size*8, **kwargs
             )
 
             if previous_badness is None:

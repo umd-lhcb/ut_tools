@@ -226,7 +226,8 @@ class CheckTimeEvolutionTester(unittest.TestCase):
         ref_patterns = {
             'elink0': [i for i in range(0, 256)]
         }
-        result = check_time_evolution(ref_patterns, parsed_data)
+        result = check_time_evolution(
+            slice_ref_patterns(ref_patterns), parsed_data)
         self.assertEqual(result['elink0']['counting_direction'], 'up')
         self.assertEqual(result['elink0']['counting_length'], 13)
         self.assertEqual(result['elink0']['max_sequence'],
@@ -248,7 +249,8 @@ class CheckTimeEvolutionTester(unittest.TestCase):
         ref_patterns = {
             'elink0': [i for i in range(0, 256)]
         }
-        result = check_time_evolution(ref_patterns, parsed_data)
+        result = check_time_evolution(
+            slice_ref_patterns(ref_patterns), parsed_data)
         self.assertEqual(result['elink0']['counting_direction'], 'down')
         self.assertEqual(result['elink0']['counting_length'], 7)
         self.assertEqual(result['elink0']['max_sequence'],
@@ -269,7 +271,8 @@ class CheckTimeEvolutionTester(unittest.TestCase):
         ref_patterns = {
             'elink0': [i for i in range(0, 256)]
         }
-        result = check_time_evolution(ref_patterns, parsed_data)
+        result = check_time_evolution(
+            slice_ref_patterns(ref_patterns), parsed_data)
         self.assertEqual(result['elink0']['counting_direction'], 'up')
         self.assertEqual(result['elink0']['counting_length'], 2)
         self.assertEqual(result['elink0']['max_sequence'],
@@ -290,7 +293,8 @@ class CheckTimeEvolutionTester(unittest.TestCase):
         ref_patterns = {
             'elink0': [i for i in range(0, 256)]
         }
-        result = check_time_evolution(ref_patterns, parsed_data)
+        result = check_time_evolution(
+            slice_ref_patterns(ref_patterns), parsed_data)
         self.assertEqual(result['elink0']['counting_direction'], 'none')
         self.assertEqual(result['elink0']['counting_length'], 0)
         self.assertEqual(result['elink0']['max_sequence'], [])
@@ -310,7 +314,8 @@ class CheckTimeEvolutionTester(unittest.TestCase):
         ref_patterns = {
             'elink4': [i for i in range(0, 256)]
         }
-        result = check_time_evolution(ref_patterns, parsed_data)
+        result = check_time_evolution(
+            slice_ref_patterns(ref_patterns), parsed_data)
         self.assertEqual(result['elink4']['counting_direction'], 'up')
         self.assertEqual(result['elink4']['counting_length'], 7)
         self.assertEqual(result['elink4']['max_sequence'],
@@ -359,7 +364,8 @@ class CheckTimeEvolutionTester(unittest.TestCase):
         ref_patterns = {
             'elink4': [i for i in range(0, 256)]
         }
-        result = check_time_evolution(ref_patterns, parsed_data)
+        result = check_time_evolution(
+            slice_ref_patterns(ref_patterns), parsed_data)
         self.assertEqual(result['elink4']['counting_direction'], 'up')
         self.assertEqual(result['elink4']['counting_length'], 22)
         self.assertEqual(result['elink4']['max_sequence'],
