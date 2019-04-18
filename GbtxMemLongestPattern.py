@@ -19,8 +19,8 @@ from CometTools.GbtxMemAnalyzer import check_time_evolution
 
 
 # Returns e-link name given a global index. It allows us to modularly change e-
-# link order Currently it uses the order directly in files, starting in e-group
-# 5 since there is no data in 6
+# link order.
+# Currently it uses the order directly in files.
 def elink_names():
     return ['elink' + str(i) for i in range(0, 12)]
 
