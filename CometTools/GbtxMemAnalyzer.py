@@ -53,19 +53,13 @@ def ref_cyclic_pattern(elinks, stepsizes):
 def check_shift(expected, data, length_expected, length_data):
     length = length_data - length_expected
 
-    if length < 0:
-        raise ValueError(
-            '{} is longer than {} in binary representation'.format(
-                expected, data
-            ))
-
-    test_pattern = int('0b'+'1'*length_expected, 2)
-    checksum = test_pattern & expected
+    mask = int('0b'+'1'*length_expected, 2)
+    checksum = mask & expected
 
     # To differentiate between shifting by a full byte and a real error
     shift = length + 1
     for s in range(0, length+1):
-        if test_pattern & (data >> s) == checksum:
+        if mask & (data >> s) == checksum:
             shift = s
             break
 
@@ -202,10 +196,8 @@ def slice_ref_patterns(ref_patterns, **kwargs):
 # NOTE: We may need to consider the inverted polarity reference pattern as
 #       counting down. Though with current reference pattern (0x0 - 0x255), I
 #       don't think it makes any difference.
-def find_counting_direction(sliced_pattern, data, length_data, **kwargs):
-    length_prev = 2*8 if 'prev' not in kwargs.keys() else kwargs['prev']*8
-    length_next = 2*8 if 'next' not in kwargs.keys() else kwargs['next']*8
-
+def find_counting_direction(sliced_pattern, data, length_data,
+                            length_prev=16, length_next=16):
     direction = 0
 
     for sliced in sliced_pattern:
