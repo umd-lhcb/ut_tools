@@ -135,19 +135,19 @@ class CheckTimeEvolutionTester(unittest.TestCase):
 
     def test_find_slicing_idx_case1(self):
         self.assertEqual(
-            find_slicing_idx(0, 10, prev=3, next=3),
+            find_slicing_idx(0, 10, slice_size=3),
             (0, 3)
         )
 
     def test_find_slicing_idx_case2(self):
         self.assertEqual(
-            find_slicing_idx(2, 4, prev=3, next=3),
+            find_slicing_idx(2, 4, slice_size=3),
             (0, 4)
         )
 
     def test_find_slicing_idx_case3(self):
         self.assertEqual(
-            find_slicing_idx(4, 11, prev=3, next=3),
+            find_slicing_idx(4, 11, slice_size=3),
             (1, 7)
         )
 

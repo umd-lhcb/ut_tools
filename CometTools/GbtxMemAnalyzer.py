@@ -161,9 +161,9 @@ def concatenate_bytes(byte_list, reverse=True):
     return sum([byte_list[i] << (8*i) for i in range(0, len(byte_list))])
 
 
-def find_slicing_idx(current_idx, length, prev=2, next=2):
-    prev_idx = max(0, current_idx - prev)
-    next_idx = min(length, current_idx + next)
+def find_slicing_idx(current_idx, length, slice_size=2):
+    prev_idx = max(0, current_idx - slice_size)
+    next_idx = min(length, current_idx + slice_size)
     return (prev_idx, next_idx)
 
 
@@ -197,26 +197,27 @@ def slice_ref_patterns(ref_patterns, **kwargs):
 #       counting down. Though with current reference pattern (0x0 - 0x255), I
 #       don't think it makes any difference.
 def find_counting_direction(sliced_pattern, data, length_data,
-                            length_prev=16, length_next=16):
+                            slice_size=2):
     direction = 0
+    length_slice = slice_size*8
 
     for sliced in sliced_pattern:
         prev_slice, prev_slice_len, next_slice, next_slice_len = sliced
 
-        if next_slice_len == length_next / 8:
+        if next_slice_len == slice_size:
             expected = next_slice
-            pass_thresh = length_data - length_next
-            shift = check_shift(expected, data, length_next, length_data)
+            pass_thresh = length_data - length_slice
+            shift = check_shift(expected, data, length_slice, length_data)
             if 0 <= shift <= pass_thresh:
                 direction = 1
                 break
 
         # We prefer counting up. So if it's already considered up, we skip the
         # following check.
-        if not direction and prev_slice_len == length_prev / 8:
+        if not direction and prev_slice_len == slice_size:
             expected = prev_slice
-            pass_thresh = length_data - length_prev
-            shift = check_shift(expected, data, length_prev, length_data)
+            pass_thresh = length_data - length_slice
+            shift = check_shift(expected, data, length_slice, length_data)
             if 0 <= shift <= pass_thresh:
                 direction = -1
                 break
