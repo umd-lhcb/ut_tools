@@ -4,6 +4,9 @@ dist: xenial
 sudo: true
 
 script:
+    - ./CsvGen.py
+    - ./GbtxMemLongestPattern.py 20190417
     - cd ./test
     - ./GbtxMemAnalyzer.unittest.py
     - ./GbtxMemParser.unittest.py
+    - ./CsvParser.unittest.py
