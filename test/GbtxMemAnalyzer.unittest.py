@@ -9,6 +9,7 @@ from CometTools.GbtxMemAnalyzer import ref_cyclic_pattern
 from CometTools.GbtxMemAnalyzer import check_match
 from CometTools.GbtxMemAnalyzer import check_shift, check_shift_single_byte
 from CometTools.GbtxMemAnalyzer import concatenate_bytes, find_slicing_idx
+from CometTools.GbtxMemAnalyzer import slice_ref_patterns
 from CometTools.GbtxMemAnalyzer import find_counting_direction
 from CometTools.GbtxMemAnalyzer import check_time_evolution
 
@@ -152,49 +153,55 @@ class CheckTimeEvolutionTester(unittest.TestCase):
 
     def test_find_counting_direction_up_case1(self):
         data = 0xFDFEFF
-        ref_pattern = [0xFD, 0xFE, 0xFF]
+        ref_patterns = {'elink0': [0xFD, 0xFE, 0xFF]}
+        sliced = slice_ref_patterns(ref_patterns)['elink0']
         self.assertEqual(
-            find_counting_direction(ref_pattern, data, 24),
+            find_counting_direction(sliced, data, 24),
             (1, 8)
         )
 
     def test_find_counting_direction_up_case2(self):
         data = 0xFFFDFE
-        ref_pattern = [0xFD, 0xFE, 0xFF]
+        ref_patterns = {'elink0': [0xFD, 0xFE, 0xFF]}
+        sliced = slice_ref_patterns(ref_patterns)['elink0']
         self.assertEqual(
-            find_counting_direction(ref_pattern, data, 24),
+            find_counting_direction(sliced, data, 24),
             (1, 0)
         )
 
     def test_find_counting_direction_up_case3(self):
         data = 0xFEFEFF
-        ref_pattern = [0xFD, 0xFE, 0xFF]
+        ref_patterns = {'elink0': [0xFD, 0xFE, 0xFF]}
+        sliced = slice_ref_patterns(ref_patterns)['elink0']
         self.assertEqual(
-            find_counting_direction(ref_pattern, data, 24),
+            find_counting_direction(sliced, data, 24),
             (1, 0)
         )
 
     def test_find_counting_direction_down_case1(self):
         data = 0xFFFEFD
-        ref_pattern = [0xFD, 0xFE, 0xFF]
+        ref_patterns = {'elink0': [0xFD, 0xFE, 0xFF]}
+        sliced = slice_ref_patterns(ref_patterns)['elink0']
         self.assertEqual(
-            find_counting_direction(ref_pattern, data, 24),
+            find_counting_direction(sliced, data, 24),
             (-1, 8)
         )
 
     def test_find_counting_direction_down_case2(self):
         data = 0xFFFFFE
-        ref_pattern = [0xFD, 0xFE, 0xFF]
+        ref_patterns = {'elink0': [0xFD, 0xFE, 0xFF]}
+        sliced = slice_ref_patterns(ref_patterns)['elink0']
         self.assertEqual(
-            find_counting_direction(ref_pattern, data, 24),
+            find_counting_direction(sliced, data, 24),
             (-1, 0)
         )
 
     def test_find_counting_direction_none(self):
         data = 0x01033C
-        ref_pattern = [0xFD, 0xFE, 0xFF]
+        ref_patterns = {'elink0': [0xFD, 0xFE, 0xFF]}
+        sliced = slice_ref_patterns(ref_patterns)['elink0']
         self.assertEqual(
-            find_counting_direction(ref_pattern, data, 24),
+            find_counting_direction(sliced, data, 24),
             (0, 9)
         )
 
@@ -357,8 +364,6 @@ class CheckTimeEvolutionTester(unittest.TestCase):
         self.assertEqual(result['elink4']['counting_length'], 22)
         self.assertEqual(result['elink4']['max_sequence'],
                          [i for i in range(3, 0x19)])
-
-
 
 
 if __name__ == '__main__':

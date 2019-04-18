@@ -7,6 +7,7 @@
 
 from copy import deepcopy
 from collections import defaultdict
+from collections import namedtuple
 
 
 ###############################
@@ -172,35 +173,60 @@ def find_slicing_idx(current_idx, length, prev=2, next=2):
     return (prev_idx, next_idx)
 
 
+SingleSliceRef = namedtuple(
+    'SingleSliceRef', 'prev_slice prev_slice_len next_slice next_slice_len')
+
+
+def slice_ref_patterns(ref_patterns, **kwargs):
+    sliced_patterns = {elink: [] for elink in ref_patterns.keys()}
+
+    for elink, ref_pattern in ref_patterns.items():
+        length_ref_pattern = len(ref_pattern)
+        for idx in range(0, length_ref_pattern):
+            prev_idx, next_idx = find_slicing_idx(
+                idx, length_ref_pattern, **kwargs)
+
+            prev_slice = [ref_pattern[i] for i in range(idx, prev_idx, -1)]
+            next_slice = [ref_pattern[i] for i in range(idx, next_idx)]
+            prev_slice_len = len(prev_slice)
+            next_slice_len = len(next_slice)
+
+            sliced_patterns[elink].append(
+                SingleSliceRef(concatenate_bytes(prev_slice), prev_slice_len,
+                               concatenate_bytes(next_slice), next_slice_len)
+            )
+
+    return sliced_patterns
+
+
 # NOTE: We may need to consider the inverted polarity reference pattern as
 #       counting down. Though with current reference pattern (0x0 - 0x255), I
 #       don't think it makes any difference.
-def find_counting_direction(ref_pattern, data, length_data, **kwargs):
+def find_counting_direction(sliced_ref_pattern, data, length_data, **kwargs):
     length_prev = 2*8 if 'prev' not in kwargs.keys() else kwargs['prev']*8
     length_next = 2*8 if 'next' not in kwargs.keys() else kwargs['next']*8
-    length_ref_pattern = len(ref_pattern)
 
     direction = 0
 
-    for idx in range(0, length_ref_pattern):
-        prev_idx, next_idx = find_slicing_idx(idx, length_ref_pattern, **kwargs)
-        prev_slice = [ref_pattern[i] for i in range(idx, prev_idx, -1)]
-        next_slice = [ref_pattern[i] for i in range(idx, next_idx)]
+    for sliced in sliced_ref_pattern:
+        prev_slice, prev_slice_len, next_slice, next_slice_len = sliced
 
-        if len(prev_slice) == length_prev / 8:
-            expected = concatenate_bytes(prev_slice)
-            pass_thresh = length_data - length_prev
-            shift = check_shift(expected, data, length_prev, length_data)
-            if 0 <= shift <= pass_thresh:
-                direction = -1
-                break
-
-        if len(next_slice) == length_next / 8:
-            expected = concatenate_bytes(next_slice)
+        if next_slice_len == length_next / 8:
+            expected = next_slice
             pass_thresh = length_data - length_next
             shift = check_shift(expected, data, length_next, length_data)
             if 0 <= shift <= pass_thresh:
                 direction = 1
+                break
+
+        # We prefer counting up. So if it's already considered up, we skip the
+        # following check.
+        if not direction and prev_slice_len == length_prev / 8:
+            expected = prev_slice
+            pass_thresh = length_data - length_prev
+            shift = check_shift(expected, data, length_prev, length_data)
+            if 0 <= shift <= pass_thresh:
+                direction = -1
                 break
 
     return (direction, shift)
