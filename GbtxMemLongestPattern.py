@@ -14,6 +14,7 @@ from sty import fg, ef, rs
 
 from CometTools.GbtxMemParser import GbtxMemParser
 from CometTools.GbtxMemAnalyzer import ref_cyclic_pattern
+from CometTools.GbtxMemAnalyzer import slice_ref_patterns
 from CometTools.GbtxMemAnalyzer import check_time_evolution
 
 
@@ -80,7 +81,9 @@ if __name__ == '__main__':
                        for comet, inner in comet_mem_files.items()}
 
     ref_patterns = ref_cyclic_pattern(elinks, [1]*12)
-    all_test_results = {comet: {gbtx: check_time_evolution(ref_patterns, data)
+    sliced_patterns = slice_ref_patterns(ref_patterns)
+    all_test_results = {comet: {gbtx: check_time_evolution(sliced_patterns,
+                                                           data)
                                 for gbtx, data in inner.items()}
                         for comet, inner in all_parsed_data.items()}
 
