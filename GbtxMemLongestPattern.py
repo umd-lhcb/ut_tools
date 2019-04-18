@@ -80,7 +80,7 @@ if __name__ == '__main__':
     threshold = 5  # Consider an elink alive if it has at least 5 counting bytes
 
     comet_prefix = sys.argv[1]
-    elinks = elink_names()
+    preferred_elink_names = elink_names()
 
     ##############
     # Validation #
@@ -91,7 +91,7 @@ if __name__ == '__main__':
                                for gbtx, f in inner.items()}
                        for comet, inner in comet_mem_files.items()}
 
-    ref_patterns = ref_cyclic_pattern(elinks, [1]*12)
+    ref_patterns = ref_cyclic_pattern(preferred_elink_names, [1]*12)
     sliced_patterns = slice_ref_patterns(ref_patterns, slice_size=slice_size)
     all_test_results = {comet: {
         gbtx: check_time_evolution(sliced_patterns, data,
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
     final_result = {gbtx: {elink: {
         'from': 'none', 'direction': 'none', 'length': 0}
-        for elink in elink_names()} for gbtx in range(1, 7)}
+        for elink in preferred_elink_names} for gbtx in range(1, 7)}
 
     ##########
     # Output #
@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
     for gbtx in range(1, 7):
         for comet in ['a', 'b']:
-            for elink in elink_names():
+            for elink in preferred_elink_names:
                 counting_length = \
                     all_test_results[comet][gbtx][elink]['counting_length']
 
@@ -124,7 +124,7 @@ if __name__ == '__main__':
 
     elink_counting_directions = [final_result[gbtx][elink]['direction']
                                  for gbtx in range(1, 7)
-                                 for elink in elink_names()]
+                                 for elink in preferred_elink_names]
     total_num = 72
     num_counting_up = \
         len(list(filter(lambda x: x == 'up', elink_counting_directions)))
@@ -145,11 +145,11 @@ if __name__ == '__main__':
     length_of_gbtx = len('GBTx-1')
     print(' '*length_of_gbtx, end='')
 
-    for elink in elink_names():
+    for elink in preferred_elink_names:
         print('{0:>{1}}'.format(elink, width), end='')
     print()
 
-    print('-'*(length_of_gbtx + width*len(elink_names())))
+    print('-'*(length_of_gbtx + width*len(preferred_elink_names)))
 
     for gbtx, elinks in final_result.items():
         print('GBTx-{}'.format(gbtx), end=' ')
