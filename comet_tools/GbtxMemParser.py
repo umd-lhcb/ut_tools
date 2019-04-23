@@ -38,7 +38,7 @@ class GbtxMemParser(object):
 
         with open(self.filename) as f:  # open txt file
             for line in f:
-                self.dissect_str_to_dict(line.strip())
+                parsed_data.append(self.dissect_str_to_dict(line.strip()))
 
         return parsed_data
 
