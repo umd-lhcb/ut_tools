@@ -34,34 +34,33 @@ class GbtxMemParser(object):
                      'elink11': <1-byte int>}
                 Note that the header is removed from the final result.
         '''
-        with open(self.filename) as f:  # open txt file
-            raw_data = f.read().splitlines()  # Make sure no '\n' at the end
+        parsed_data = []
 
-        return self.dissect_str_to_dict(raw_data)
+        with open(self.filename) as f:  # open txt file
+            for line in f:
+                self.dissect_str_to_dict(line.strip())
+
+        return parsed_data
 
     @classmethod
-    def dissect_str_to_dict(cls, raw_data):
+    def dissect_str_to_dict(cls, raw_line):
         '''Take a list of string, dissecting them to list of dictionary.
 
         Parameters:
-            raw_data (list): A list of str, each str is a single line in the
-                memory monitoring file.
+            raw_line (str): A single line in the input data file
 
         Returns:
-            parsed_data (list): Same form as defined in 'parse' method.
+            parsed_line (dict): Same form as defined in 'parse' method.
                 This is the normal output of the parser.
         '''
         elink_idx_map = cls.elink_channel_idx_mapping()
-        parsed_data = []
+        parsed_line = {}
 
-        for raw_packet in raw_data:
-            parsed_packet = {}
-            for elink, idx in elink_idx_map.items():
-                idx = len(raw_packet) - idx
-                parsed_packet[elink] = int(raw_packet[idx-2:idx], 16)
-            parsed_data.append(parsed_packet)
+        for elink, idx in elink_idx_map.items():
+            idx = len(raw_line) - idx
+            parsed_line[elink] = int(raw_line[idx-2:idx], 16)
 
-        return parsed_data
+        return parsed_line
 
     @staticmethod
     def elink_channel_idx_mapping():
