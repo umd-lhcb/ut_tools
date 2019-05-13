@@ -6,7 +6,7 @@
 
 from pathlib import Path
 
-from comet_tools.GbtxMemAnalyzer import fixed_pattern, cyclic_pattern
+from ut_tools.GbtxMemAnalyzer import fixed_pattern, cyclic_pattern
 
 output_dir = Path('gen')
 
