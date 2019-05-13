@@ -5,8 +5,8 @@ import unittest
 import sys
 sys.path.insert(0, '..')
 
-from comet_tools.CsvParser import regulator_signal_id_for_comet_dcb_mapping
-from comet_tools.CsvParser import CsvParser
+from ut_tools.CsvParser import regulator_signal_id_for_comet_dcb_mapping
+from ut_tools.CsvParser import CsvParser
 
 
 class CsvParserTester(unittest.TestCase):

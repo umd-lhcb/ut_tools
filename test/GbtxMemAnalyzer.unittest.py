@@ -5,13 +5,13 @@ import unittest
 import sys
 sys.path.insert(0, '..')
 
-from comet_tools.GbtxMemAnalyzer import ref_cyclic_pattern
-from comet_tools.GbtxMemAnalyzer import check_match
-from comet_tools.GbtxMemAnalyzer import check_shift, check_shift_single_byte
-from comet_tools.GbtxMemAnalyzer import concatenate_bytes, find_slicing_idx
-from comet_tools.GbtxMemAnalyzer import slice_ref_patterns
-from comet_tools.GbtxMemAnalyzer import find_counting_direction
-from comet_tools.GbtxMemAnalyzer import check_time_evolution
+from ut_tools.GbtxMemAnalyzer import ref_cyclic_pattern
+from ut_tools.GbtxMemAnalyzer import check_match
+from ut_tools.GbtxMemAnalyzer import check_shift, check_shift_single_byte
+from ut_tools.GbtxMemAnalyzer import concatenate_bytes, find_slicing_idx
+from ut_tools.GbtxMemAnalyzer import slice_ref_patterns
+from ut_tools.GbtxMemAnalyzer import find_counting_direction
+from ut_tools.GbtxMemAnalyzer import check_time_evolution
 
 
 class GbtxRefPatternTester(unittest.TestCase):
