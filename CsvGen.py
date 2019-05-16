@@ -8,7 +8,7 @@ from pathlib import Path
 
 from ut_tools.GbtxMemAnalyzer import fixed_pattern, cyclic_pattern
 
-output_dir = Path('gen')
+output_dir = Path('output')
 
 
 ##########
