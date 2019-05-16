@@ -15,13 +15,9 @@ script:
     - cd ./test
     - ./GbtxMemAnalyzer.unittest.py
     - ./GbtxMemParser.unittest.py
-
-after_success:
-    - cd output
+    - cd ../output
     - tar -zcf comet_csv.tar.gz cyclic fixed
     - tar -zcf backplane_bom_mounter-true.tar.gz true
-    - cd ..
-    - ls output
 
 deploy:
     provider: releases
