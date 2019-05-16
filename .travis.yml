@@ -11,6 +11,7 @@ install:
 script:
     - ./CsvGen.py
     - ./GbtxMemLongestPattern.py 20190417
+    - ./BackplaneVarGen.py true 20190516
     - cd ./test
     - ./GbtxMemAnalyzer.unittest.py
     - ./GbtxMemParser.unittest.py
@@ -18,6 +19,7 @@ script:
 after_success:
     - cd output
     - tar -zcf comet_csv.tar.gz cyclic fixed
+    - tar -zcf backplane_bom_mounter-true.tar.gz true
 
 deploy:
     provider: releases
@@ -25,6 +27,7 @@ deploy:
         secure: IHwQgKn1j0vjv+gjvOop5pwzbY4QQ55BKst18kX8q2PZkxhhGWxiVd2k2PBr1YQ5WG4tPK17h+Xf+3ouuNqaM0xgg09Q1aPfZ1+dO/EvT+AI42/Zc8zkJXJEFSk+jb5MLBA5NC5g8svP+/TVMJXhihaaz/YMwnGL4KQ6iW+vSIb2hehKhhCQ7rhm9jOCGo24Wm2Xs8WZ8OrQpeZwaOghW++Cnew8JwjzarXav8r8K8vmCDTv/agkpLuaQYwQXoq6ifX1tOkXs5PVBb3bBR7OZoSzu/PvISrYOpjHG8RwJJLHih+oOa1Fc6p7ByZUXBwXn3QRQ96J2PyaLFR6E2f0MqTWslhZcijI5yqX+CiZBDvOLBVj/g1ULdYPwMLef6QjFQj/75WxAboXgTpMgEIOshJgiS2xq12ZlN0OTmpkoimSwCYrEMLxDF8L1+7cCPINuUgTa8g1+5NKmHB5YnVsWf1Mz4DYcT0oWf4XgCukYaRVYwmATuCTntMF5r61+9IVawbe3pBOD4RedhEp0wJvzHItjDDRK+QlCkz2abmRtLRRoZabjW6CMZlpTaLZ7LsqrVtuqSP/AEMQBWTd6qvQm6maxy236pLgZBqE4+UV6IZaEL07Iq/2Sz5W7U7n8UYCBbDWQuAt9UJvpJQzW6SVKyWf05j+oj33BbeLtmIzbjY=
     file:
         - ./output/comet_csv.tar.gz
+        - ./output/backplane_bom_mounter-true.tar.gz
     skip_cleanup: true
     on:
         tags: true
