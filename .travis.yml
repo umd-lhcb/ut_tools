@@ -14,7 +14,6 @@ script:
     - cd ./test
     - ./GbtxMemAnalyzer.unittest.py
     - ./GbtxMemParser.unittest.py
-    - ./CsvParser.unittest.py
 
 after_success:
     - cd output
