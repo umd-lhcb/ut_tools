@@ -77,23 +77,82 @@ class CompRepDel(object):
 ################
 
 for f in bom_files:
-    alpha_handler = CompRepDel(
+    handler = CompRepDel(
         f, output_dir / Path(sys.argv[1]) / Path('alpha'),
         replacement_rules=(
             ('R0805_5R6_1%_0.125W_200PPM', 'RC0805FR-075R6L'),
-            ('R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F')
+            ('R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
+            ('CC0402_100NF_16V_10%_X7R', 'EMK105B7104KV-F'),
+            ('CC0402_10NF_25V_10%_X7R', 'TMK105B7103KV-F')
         ),
         depopulation_rules=(
             (r'^CxRB_', 'CC0402_47NF_16V_10%_X7R', 'CC0402KRX7R7BB473'),
-            (r'^RBSP_', 'R0402_100R_1%_0.1W_100PPM_50V', 'DNI'),
             (r'^RB_', 'R0402_100R_1%_0.1W_100PPM_50V', 'DNI'),
+            (r'^RBSP_', 'R0402_100R_1%_0.1W_100PPM_50V', 'DNI'),
         )
     )
-    alpha_handler.do()
+    handler.do()
 
 for f in pnp_files:
-    alpha_handler = CompRepDel(
+    handler = CompRepDel(
         f, output_dir / Path(sys.argv[1]) / Path('alpha'),
         deletion_rules=(r'^RBSP_', r'^RB_')
     )
-    alpha_handler.do()
+    handler.do()
+
+
+###############
+# Handle Beta #
+###############
+
+for f in bom_files:
+    handler = CompRepDel(
+        f, output_dir / Path(sys.argv[1]) / Path('beta'),
+        replacement_rules=(
+            ('R0805_5R6_1%_0.125W_200PPM', 'RC0805FR-075R6L'),
+            ('R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
+            ('CC0402_100NF_16V_10%_X7R', 'EMK105B7104KV-F'),
+            ('CC0402_10NF_25V_10%_X7R', 'TMK105B7103KV-F')
+        ),
+        depopulation_rules=(
+            (r'^CxRB_', 'CC0402_47NF_16V_10%_X7R', 'RK73H1ETTP1000F'),
+            (r'^RB_', 'R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
+            (r'^RBSP_', 'R0402_100R_1%_0.1W_100PPM_50V', 'DNI'),
+        )
+    )
+    handler.do()
+
+for f in pnp_files:
+    handler = CompRepDel(
+        f, output_dir / Path(sys.argv[1]) / Path('beta'),
+        deletion_rules=(r'^RBSP_')
+    )
+    handler.do()
+
+
+##########################
+# Handle Beta SP (Gamma) #
+##########################
+
+for f in bom_files:
+    handler = CompRepDel(
+        f, output_dir / Path(sys.argv[1]) / Path('betasp'),
+        replacement_rules=(
+            ('R0805_5R6_1%_0.125W_200PPM', 'RC0805FR-075R6L'),
+            ('R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
+            ('CC0402_100NF_16V_10%_X7R', 'EMK105B7104KV-F'),
+            ('CC0402_10NF_25V_10%_X7R', 'TMK105B7103KV-F')
+        ),
+        depopulation_rules=(
+            (r'^CxRB_', 'CC0402_47NF_16V_10%_X7R', 'RK73H1ETTP1000F'),
+            (r'^RB_', 'R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
+            (r'^RBSP_', 'R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
+        )
+    )
+    handler.do()
+
+for f in pnp_files:
+    handler = CompRepDel(
+        f, output_dir / Path(sys.argv[1]) / Path('betasp')
+    )
+    handler.do()
