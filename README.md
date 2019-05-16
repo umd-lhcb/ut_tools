@@ -3,6 +3,14 @@ A collection of COMET tools for various LHCb UT upgrade testings.
 
 
 ## Backplane
+### `BackplaneVarGen.py`
+Generate BOM and pick-and-place files for the 3 variant of specified backplane
+type.
+
+To use:
+```
+BackplaneVarGen.py <type:true|mirror> <date:20190516>
+```
 
 
 ## COMET
@@ -14,6 +22,11 @@ refer to the script source code. Prototyped by Raymond Su.
 ### `GbtxMemLongestPattern.py`
 Find the maximum continuous pattern for each elink based on exported elink
 memory files.
+
+To use:
+```
+GbtxMemLongestPattern.py <date:20190417>
+```
 
 
 ### Exported elink memory
