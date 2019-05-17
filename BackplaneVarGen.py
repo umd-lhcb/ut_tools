@@ -125,7 +125,7 @@ for f in bom_files:
 for f in pnp_files:
     handler = CompRepDel(
         f, output_dir / Path(sys.argv[1]) / Path('beta'),
-        deletion_rules=(r'^RBSP_')
+        deletion_rules=(r'^RBSP_', )
     )
     handler.do()
 
