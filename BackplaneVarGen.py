@@ -136,7 +136,7 @@ for f in pnp_files:
 
 for f in bom_files:
     handler = CompRepDel(
-        f, output_dir / Path(sys.argv[1]) / Path('betasp'),
+        f, output_dir / Path(sys.argv[1]) / Path('gamma'),
         replacement_rules=(
             ('R0805_5R6_1%_0.125W_200PPM', 'RC0805FR-075R6L'),
             ('R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
@@ -153,6 +153,6 @@ for f in bom_files:
 
 for f in pnp_files:
     handler = CompRepDel(
-        f, output_dir / Path(sys.argv[1]) / Path('betasp')
+        f, output_dir / Path(sys.argv[1]) / Path('gamma')
     )
     handler.do()
