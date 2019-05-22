@@ -164,10 +164,9 @@ for gbtx, elinks in final_result.items():
                 comet.upper() + rs.bold_dim + fg.rs
             output_problematic_elinks_info.append([elink_id, comet_pins])
 
-        direction = elink_info['direction']
+        direction = direction_symbols[elink_info['direction']]
         length = '{:2}'.format(elink_info['length'])
-        row.append(','.join([formatted_comet, direction_symbols[direction],
-                             length]))
+        row.append(','.join([formatted_comet, direction, length]))
     output_gbtx.append(row)
 
 # Print the GBTx output table
