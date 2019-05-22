@@ -99,16 +99,11 @@ test_result = {comet: {
     for gbtx, data in inner.items()}
     for comet, inner in parsed_data.items()}
 
-
-##########
-# Output #
-##########
-
+# Determine the COMET variant of each elink on each GBTx
 final_result = {gbtx: {elink: {
     'from': 'none', 'direction': 'none', 'length': 0}
     for elink in elink_names} for gbtx in range(1, 7)}
 
-# Determine the COMET variant of each elink on each GBTx
 for gbtx in range(1, 7):
     for comet in ['a', 'b']:
         row = ['GBTx-{}'.format(gbtx)]
@@ -123,6 +118,11 @@ for gbtx in range(1, 7):
                 final_result[gbtx][elink]['direction'] = \
                     test_result[comet][gbtx][elink]['counting_direction']
                 final_result[gbtx][elink]['length'] = counting_length
+
+
+##########
+# Output #
+##########
 
 elink_counting_directions = [final_result[gbtx][elink]['direction']
                              for gbtx in range(1, 7)
