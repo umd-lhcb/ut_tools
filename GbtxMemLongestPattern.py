@@ -115,13 +115,14 @@ for gbtx in range(1, 7):
         for elink in elink_names:
             counting_length = \
                 test_result[comet][gbtx][elink]['counting_length']
-            final_result[gbtx][elink]['length'] = counting_length
+            if final_result[gbtx][elink]['length'] < threshold:
+                final_result[gbtx][elink]['length'] = counting_length
 
             if counting_length > threshold:
                 final_result[gbtx][elink]['from'] = comet
-
                 final_result[gbtx][elink]['direction'] = \
                     test_result[comet][gbtx][elink]['counting_direction']
+                final_result[gbtx][elink]['length'] = counting_length
 
 elink_counting_directions = [final_result[gbtx][elink]['direction']
                              for gbtx in range(1, 7)
@@ -141,6 +142,9 @@ print('\nFound {0} e-links counting up, {1} counting down, and {2} dead\n'.forma
 comet_dcb_map = regularize_comet_dcb_mapping()
 output_gbtx = []
 output_problematic_elinks_info = []
+direction_symbols = {'up':   ef.bold+'↑'+rs.bold_dim,
+                     'down': ef.bold+'↓'+rs.bold_dim,
+                     'none': fg.red+ef.bold+'⨯'+rs.bold_dim+fg.rs}
 
 for gbtx, elinks in final_result.items():
     row = ['GBTx-{}'.format(gbtx)]
@@ -161,8 +165,9 @@ for gbtx, elinks in final_result.items():
             output_problematic_elinks_info.append([elink_id, comet_pins])
 
         direction = elink_info['direction']
-        length = str(elink_info['length'])
-        row.append(','.join([formatted_comet, direction, length]))
+        length = '{:2}'.format(elink_info['length'])
+        row.append(','.join([formatted_comet, direction_symbols[direction],
+                             length]))
     output_gbtx.append(row)
 
 # Print the GBTx output table
