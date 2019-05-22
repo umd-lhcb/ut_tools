@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-@author: Manuel Franco Sevilla
+@author: Manuel Franco Sevilla, Yipeng Sun
 @license: BSD 2-clause
 @description: Finds the longest ascending/descending continuous patterns
 '''
@@ -115,14 +115,13 @@ for gbtx in range(1, 7):
         for elink in elink_names:
             counting_length = \
                 test_result[comet][gbtx][elink]['counting_length']
+            final_result[gbtx][elink]['length'] = counting_length
 
             if counting_length > threshold:
                 final_result[gbtx][elink]['from'] = comet
 
                 final_result[gbtx][elink]['direction'] = \
                     test_result[comet][gbtx][elink]['counting_direction']
-
-                final_result[gbtx][elink]['length'] = counting_length
 
 elink_counting_directions = [final_result[gbtx][elink]['direction']
                              for gbtx in range(1, 7)
