@@ -118,6 +118,9 @@ for f in bom_files:
         ),
         depopulation_rules=(
             (r'^CxRB_', 'CC0402_47NF_16V_10%_X7R', 'RK73H1ETTP1000F'),
+            # Replace the capacitance with resistance. Same for Gamma.
+            (r'^CxRB_', 'CAPC1005X55N', 'RESC1005X40N'),
+            (r'^CxRB_', '47nF', '100'),
             (r'^RB_', 'R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
             (r'^RBSP_', 'R0402_100R_1%_0.1W_100PPM_50V', 'DNI'),
         )
@@ -148,6 +151,8 @@ for f in bom_files:
         ),
         depopulation_rules=(
             (r'^CxRB_', 'CC0402_47NF_16V_10%_X7R', 'RK73H1ETTP1000F'),
+            (r'^CxRB_', 'CAPC1005X55N', 'RESC1005X40N'),
+            (r'^CxRB_', '47nF', '100'),
             (r'^RB_', 'R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
             (r'^RBSP_', 'R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
         )
