@@ -82,6 +82,7 @@ for f in bom_files:
         replacement_rules=(
             ('R0805_5R6_1%_0.125W_200PPM', 'RC0805FR-075R6L'),
             ('R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
+            ('CC0402_47NF_16V_10%_X7R', 'CC0402KRX7R7BB473'),
             ('CC0402_100NF_16V_10%_X7R', 'EMK105B7104KV-F'),
             ('CC0402_10NF_25V_10%_X7R', 'TMK105B7103KV-F')
         ),
@@ -111,6 +112,7 @@ for f in bom_files:
         replacement_rules=(
             ('R0805_5R6_1%_0.125W_200PPM', 'RC0805FR-075R6L'),
             ('R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
+            ('CC0402_47NF_16V_10%_X7R', 'CC0402KRX7R7BB473'),
             ('CC0402_100NF_16V_10%_X7R', 'EMK105B7104KV-F'),
             ('CC0402_10NF_25V_10%_X7R', 'TMK105B7103KV-F')
         ),
@@ -140,6 +142,7 @@ for f in bom_files:
         replacement_rules=(
             ('R0805_5R6_1%_0.125W_200PPM', 'RC0805FR-075R6L'),
             ('R0402_100R_1%_0.1W_100PPM_50V', 'RK73H1ETTP1000F'),
+            ('CC0402_47NF_16V_10%_X7R', 'CC0402KRX7R7BB473'),
             ('CC0402_100NF_16V_10%_X7R', 'EMK105B7104KV-F'),
             ('CC0402_10NF_25V_10%_X7R', 'TMK105B7103KV-F')
         ),
