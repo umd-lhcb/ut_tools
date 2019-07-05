@@ -1,4 +1,4 @@
-# ut_tools [![Build status](https://travis-ci.com/umd-lhcb/ut_tools.svg?branch=master)](https://travis-ci.com/umd-lhcb)
+# ut_tools [![Build status](https://travis-ci.com/umd-lhcb/ut_tools.svg?branch=master)](https://travis-ci.com/umd-lhcb/ut_tools)
 A collection of COMET tools for various LHCb UT upgrade testings.
 
 
