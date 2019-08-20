@@ -1,5 +1,5 @@
 language: python
-python: 3.7.3
+python: 3.7.4
 dist: xenial
 sudo: true
 
@@ -29,6 +29,7 @@ deploy:
     file:
         - ./output/comet_csv.tar.gz
         - ./output/backplane_bom_mounter-true.tar.gz
+        - ./output/backplane_bom_mounter-mirror.tar.gz
     skip_cleanup: true
     on:
         tags: true
