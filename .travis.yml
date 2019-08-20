@@ -12,12 +12,14 @@ script:
     - ./CsvGen.py
     - ./GbtxMemLongestPattern.py 20190417
     - ./BackplaneVarGen.py true 20190516
+    - ./BackplaneVarGen.py mirror 20190820
     - cd ./test
     - ./GbtxMemAnalyzer.unittest.py
     - ./GbtxMemParser.unittest.py
     - cd ../output
     - tar -zcf comet_csv.tar.gz cyclic fixed
     - tar -zcf backplane_bom_mounter-true.tar.gz true
+    - tar -zcf backplane_bom_mounter-mirror.tar.gz mirror
     - cd ..
 
 deploy:
